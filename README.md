@@ -1,14 +1,13 @@
-# Containers included
-- [audiobooks](https://github.com/jeo1/docker-templates/tree/audiobooks)
-- [cadvisor](https://github.com/jeo1/docker-templates/tree/cadvisor)
-- [grafana](https://github.com/jeo1/docker-templates/tree/grafana)
-- [jackett](https://github.com/jeo1/docker-templates/tree/jackett)
-- [plex](https://github.com/jeo1/docker-templates/tree/plex)
-- [node-exporter](https://github.com/jeo1/docker-templates/tree/node-exporter)
-- [node-exporter-alpine](https://github.com/jeo1/docker-templates/tree/node-exporter-alpine)
-- [portainer](https://github.com/jeo1/docker-templates/tree/portainer)
-- [qbittorrent](https://github.com/jeo1/docker-templates/tree/qbittorrent)
-- [radarr](https://github.com/jeo1/docker-templates/tree/radarr)
-- [sonarr](https://github.com/jeo1/docker-templates/tree/sonarr)
-- [tautulli](https://github.com/jeo1/docker-templates/tree/tautulli)
-- [twitch-dvr](https://github.com/jeo1/docker-templates/tree/twitch-dvr)
+### .env
+```.env
+COMPOSE_PROJECT_NAME=graphite
+TIMEZONE=America/Toronto
+
+# Update
+GRAPHITE_CONFIG=<path to graphite config>
+GRAPHITE_STORAGE=<path to graphite storage>
+GRAPHITE_CUSTOM_FUNCTIONS=<path to graphite custom functions>
+STATSD_CONFIG=<path to statsd config>
+GRAPHITE_LOG_CONFIG=<path to graphite log config>
+GRAPHITE_LOG=<path to graphite log>
+```

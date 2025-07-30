@@ -11,6 +11,7 @@
 - [node-exporter](https://github.com/jeo1/docker-templates/tree/node-exporter)
 - [node-exporter-alpine](https://github.com/jeo1/docker-templates/tree/node-exporter-alpine)
 - [portainer](https://github.com/jeo1/docker-templates/tree/portainer)
+- [prometheus](https://github.com/jeo1/docker-templates/tree/prometheus)
 - [qbittorrent](https://github.com/jeo1/docker-templates/tree/qbittorrent)
 - [radarr](https://github.com/jeo1/docker-templates/tree/radarr)
 - [sonarr](https://github.com/jeo1/docker-templates/tree/sonarr)

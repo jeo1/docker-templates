@@ -1,7 +1,20 @@
-# Containers included
-- [jackett](https://github.com/jeo1/docker-templates/tree/jackett)
-- [plex](https://github.com/jeo1/docker-templates/tree/plex)
-- [portainer](https://github.com/jeo1/docker-templates/tree/portainer)
-- [qbittorrent](https://github.com/jeo1/docker-templates/tree/qbittorrent)
-- [radarr](https://github.com/jeo1/docker-templates/tree/radarr)
-- [sonarr](https://github.com/jeo1/docker-templates/tree/sonarr)
+### .env
+```.env
+COMPOSE_PROJECT_NAME=audiobooks
+TIMEZONE=America/Toronto
+
+# Update
+AUDIOBOOKS_DOWNLOADS=<path to downloads>
+AUDIOBOOKS_CONFIG=<path to audiobooks config>
+AUDIOBOOKS_PORT=<audiobooks port>
+
+```
+
+### private/.env
+```.env
+mam_id=<mam token>
+mam_url=<mam url>
+```
+
+# Notes
+- untested

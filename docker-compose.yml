@@ -22,6 +22,6 @@ services:
     volumes:
       - "${AUDIOBOOKS_CONFIG}:/config"
       - "${AUDIOBOOKS_DOWNLOADS}:/downloads"
-    depends_on:
-      audiobooks-setup:
-        condition: service_completed_successfully
+    #depends_on:
+    #  audiobooks-setup:
+    #    condition: service_completed_successfully

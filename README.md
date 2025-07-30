@@ -7,6 +7,7 @@
 - [jackett](https://github.com/jeo1/docker-templates/tree/jackett)
 - [kuma](https://github.com/jeo1/docker-templates/tree/kuma)
 - [plex](https://github.com/jeo1/docker-templates/tree/plex)
+- [nginx](https://github.com/jeo1/docker-templates/tree/nginx)
 - [node-exporter](https://github.com/jeo1/docker-templates/tree/node-exporter)
 - [node-exporter-alpine](https://github.com/jeo1/docker-templates/tree/node-exporter-alpine)
 - [portainer](https://github.com/jeo1/docker-templates/tree/portainer)

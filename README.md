@@ -4,6 +4,8 @@
 - [grafana](https://github.com/jeo1/docker-templates/tree/grafana)
 - [jackett](https://github.com/jeo1/docker-templates/tree/jackett)
 - [plex](https://github.com/jeo1/docker-templates/tree/plex)
+- [node-exporter](https://github.com/jeo1/docker-templates/tree/node-exporter)
+- [node-exporter-alpine](https://github.com/jeo1/docker-templates/tree/node-exporter-alpine)
 - [portainer](https://github.com/jeo1/docker-templates/tree/portainer)
 - [qbittorrent](https://github.com/jeo1/docker-templates/tree/qbittorrent)
 - [radarr](https://github.com/jeo1/docker-templates/tree/radarr)

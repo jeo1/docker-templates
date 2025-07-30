@@ -1,5 +1,6 @@
 # Containers included
 - [audiobooks](https://github.com/jeo1/docker-templates/tree/audiobooks)
+- [grafana](https://github.com/jeo1/docker-templates/tree/grafana)
 - [jackett](https://github.com/jeo1/docker-templates/tree/jackett)
 - [plex](https://github.com/jeo1/docker-templates/tree/plex)
 - [portainer](https://github.com/jeo1/docker-templates/tree/portainer)

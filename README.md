@@ -3,6 +3,7 @@
 - [cadvisor](https://github.com/jeo1/docker-templates/tree/cadvisor)
 - [grafana](https://github.com/jeo1/docker-templates/tree/grafana)
 - [graphite](https://github.com/jeo1/docker-templates/tree/graphite)
+- [influxdb](https://github.com/jeo1/docker-templates/tree/influxdb)
 - [jackett](https://github.com/jeo1/docker-templates/tree/jackett)
 - [plex](https://github.com/jeo1/docker-templates/tree/plex)
 - [node-exporter](https://github.com/jeo1/docker-templates/tree/node-exporter)

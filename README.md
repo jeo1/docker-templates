@@ -1,17 +1,45 @@
-# Containers included
-- [audiobooks](https://github.com/jeo1/docker-templates/tree/audiobooks)
-- [cadvisor](https://github.com/jeo1/docker-templates/tree/cadvisor)
-- [grafana](https://github.com/jeo1/docker-templates/tree/grafana)
-- [graphite](https://github.com/jeo1/docker-templates/tree/graphite)
-- [influxdb](https://github.com/jeo1/docker-templates/tree/influxdb)
-- [jackett](https://github.com/jeo1/docker-templates/tree/jackett)
-- [kuma](https://github.com/jeo1/docker-templates/tree/kuma)
-- [plex](https://github.com/jeo1/docker-templates/tree/plex)
-- [node-exporter](https://github.com/jeo1/docker-templates/tree/node-exporter)
-- [node-exporter-alpine](https://github.com/jeo1/docker-templates/tree/node-exporter-alpine)
-- [portainer](https://github.com/jeo1/docker-templates/tree/portainer)
-- [qbittorrent](https://github.com/jeo1/docker-templates/tree/qbittorrent)
-- [radarr](https://github.com/jeo1/docker-templates/tree/radarr)
-- [sonarr](https://github.com/jeo1/docker-templates/tree/sonarr)
-- [tautulli](https://github.com/jeo1/docker-templates/tree/tautulli)
-- [twitch-dvr](https://github.com/jeo1/docker-templates/tree/twitch-dvr)
+- `.env` settings
+```env
+COMPOSE_PROJECT_NAME=nginx
+TIMEZONE=America/Toronto
+
+# Update
+SSL=<path for ssl dir>
+NGINX=<path for nginx config dir>
+```
+
+```
+mkdir $NGINX/upstream
+mkdir $NGINX/streams
+```
+
+
+- `upstream` example for qbittorrent
+```
+upstream qbittorrent {
+    zone qbittorrent 64k;
+    server <target p>:<port>;
+    keepalive 2;
+}
+```
+
+- `server` example for qbittorrent
+```
+server {
+    listen 80;
+    server_name qbittorrent.homelab.internal;
+
+    location / {
+        proxy_pass http://qbittorrent;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /static {
+        rewrite ^/static(.*) /$1 break;
+        root /static;
+    }
+}
+```

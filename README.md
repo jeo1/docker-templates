@@ -6,3 +6,4 @@
 - [qbittorrent](https://github.com/jeo1/docker-templates/tree/qbittorrent)
 - [radarr](https://github.com/jeo1/docker-templates/tree/radarr)
 - [sonarr](https://github.com/jeo1/docker-templates/tree/sonarr)
+- [tautulli](https://github.com/jeo1/docker-templates/tree/tautulli)

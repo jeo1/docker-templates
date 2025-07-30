@@ -1,15 +1,28 @@
-# Containers included
-- [audiobooks](https://github.com/jeo1/docker-templates/tree/audiobooks)
-- [cadvisor](https://github.com/jeo1/docker-templates/tree/cadvisor)
-- [grafana](https://github.com/jeo1/docker-templates/tree/grafana)
-- [graphite](https://github.com/jeo1/docker-templates/tree/graphite)
-- [jackett](https://github.com/jeo1/docker-templates/tree/jackett)
-- [plex](https://github.com/jeo1/docker-templates/tree/plex)
-- [node-exporter](https://github.com/jeo1/docker-templates/tree/node-exporter)
-- [node-exporter-alpine](https://github.com/jeo1/docker-templates/tree/node-exporter-alpine)
-- [portainer](https://github.com/jeo1/docker-templates/tree/portainer)
-- [qbittorrent](https://github.com/jeo1/docker-templates/tree/qbittorrent)
-- [radarr](https://github.com/jeo1/docker-templates/tree/radarr)
-- [sonarr](https://github.com/jeo1/docker-templates/tree/sonarr)
-- [tautulli](https://github.com/jeo1/docker-templates/tree/tautulli)
-- [twitch-dvr](https://github.com/jeo1/docker-templates/tree/twitch-dvr)
+- `.env` settings
+```env
+COMPOSE_PROJECT_NAME=influxdb
+TIMEZONE=America/Toronto
+
+# Update
+INFLUXDB_DATA=<path to influxdb data>
+INFLUXDB_CONFIG=<path to influxdb config>
+INFLUXDB_PORT=<influxdb port>
+```
+
+- `private/.env.influxdb2-admin-password`
+```
+admin
+```
+
+- `private/.env.influxdb2-admin-token`
+```
+MyInitialAdminPassword
+```
+
+- `private/.env.influxdb2-admin-username`
+```
+MyInitialAdminToken0==
+```
+
+### Notes
+- https://docs.influxdata.com/influxdb/v2/install/use-docker-compose/

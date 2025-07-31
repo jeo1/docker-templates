@@ -1,19 +1,13 @@
-# Containers included
-- [audiobooks](https://github.com/jeo1/docker-templates/tree/audiobooks)
-- [cadvisor](https://github.com/jeo1/docker-templates/tree/cadvisor)
-- [grafana](https://github.com/jeo1/docker-templates/tree/grafana)
-- [graphite](https://github.com/jeo1/docker-templates/tree/graphite)
-- [influxdb](https://github.com/jeo1/docker-templates/tree/influxdb)
-- [jackett](https://github.com/jeo1/docker-templates/tree/jackett)
-- [kuma](https://github.com/jeo1/docker-templates/tree/kuma)
-- [plex](https://github.com/jeo1/docker-templates/tree/plex)
-- [nginx](https://github.com/jeo1/docker-templates/tree/nginx)
-- [node-exporter](https://github.com/jeo1/docker-templates/tree/node-exporter)
-- [node-exporter-alpine](https://github.com/jeo1/docker-templates/tree/node-exporter-alpine)
-- [portainer](https://github.com/jeo1/docker-templates/tree/portainer)
-- [prometheus](https://github.com/jeo1/docker-templates/tree/prometheus)
-- [qbittorrent](https://github.com/jeo1/docker-templates/tree/qbittorrent)
-- [radarr](https://github.com/jeo1/docker-templates/tree/radarr)
-- [sonarr](https://github.com/jeo1/docker-templates/tree/sonarr)
-- [tautulli](https://github.com/jeo1/docker-templates/tree/tautulli)
-- [twitch-dvr](https://github.com/jeo1/docker-templates/tree/twitch-dvr)
+- `.env` settings
+```env
+COMPOSE_PROJECT_NAME=tdarr
+TIMEZONE=America/Toronto
+
+# Update
+TDARR_SERVER=<path to server>
+TDARR_CONFIG=<path to config>
+TDARR_MEDIA_MNT=<path to mounted media>
+TDARR_TRANSCODE_CACHE=<path to mounted temp>
+TDARR_WEB_PORT=<web port>
+TDARR_SERVER_PORT=<server port>
+```

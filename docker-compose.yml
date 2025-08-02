@@ -4,9 +4,7 @@ services:
     image: ghcr.io/haveagitgat/tdarr:latest
     pull_policy: always
     restart: unless-stopped
-    ports:
-      - "${TDARR_WEB_PORT}:8265" # webUI port
-      - "${TDARR_SERVER_PORT}:8266" # server port
+    network_mode: host
     environment:
       - TZ=Europe/London
       - UMASK_SET=002

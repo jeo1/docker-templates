@@ -1,0 +1,22 @@
+networks:
+  gitea:
+    external: false
+
+services:
+  server:
+    image: docker.gitea.com/gitea:latest
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    restart: always
+    networks:
+      - gitea
+    volumes:
+      - "${GITEA_DATA}:/data"
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "${GITEA_WEB_PORT}:3000"
+      - "${GITEA_SSH_PORT}:22"
+      - "${GITEA_SSH_DEFAULT_PORT}:10022"

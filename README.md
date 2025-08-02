@@ -1,20 +1,11 @@
-# Containers included
-- [audiobooks](https://github.com/jeo1/docker-templates/tree/audiobooks)
-- [cadvisor](https://github.com/jeo1/docker-templates/tree/cadvisor)
-- [grafana](https://github.com/jeo1/docker-templates/tree/grafana)
-- [graphite](https://github.com/jeo1/docker-templates/tree/graphite)
-- [influxdb](https://github.com/jeo1/docker-templates/tree/influxdb)
-- [jackett](https://github.com/jeo1/docker-templates/tree/jackett)
-- [kuma](https://github.com/jeo1/docker-templates/tree/kuma)
-- [plex](https://github.com/jeo1/docker-templates/tree/plex)
-- [nginx](https://github.com/jeo1/docker-templates/tree/nginx)
-- [node-exporter](https://github.com/jeo1/docker-templates/tree/node-exporter)
-- [node-exporter-alpine](https://github.com/jeo1/docker-templates/tree/node-exporter-alpine)
-- [portainer](https://github.com/jeo1/docker-templates/tree/portainer)
-- [prometheus](https://github.com/jeo1/docker-templates/tree/prometheus)
-- [qbittorrent](https://github.com/jeo1/docker-templates/tree/qbittorrent)
-- [radarr](https://github.com/jeo1/docker-templates/tree/radarr)
-- [sonarr](https://github.com/jeo1/docker-templates/tree/sonarr)
-- [tautulli](https://github.com/jeo1/docker-templates/tree/tautulli)
-- [tdarr](https://github.com/jeo1/docker-templates/tree/tdarr)
-- [twitch-dvr](https://github.com/jeo1/docker-templates/tree/twitch-dvr)
+- `.env` settings
+```env
+COMPOSE_PROJECT_NAME=gitea
+TIMEZONE=America/Toronto
+
+# Update
+GITEA_DATA=<path to gitea DATA dir>
+GITEA_WEB_PORT=<gitea webport>
+GITEA_SSH_PORT=<gitea ssh port, 222>
+GITEA_SSH_DEFAULT_PORT=<gitea ssh default port, 10022>
+```

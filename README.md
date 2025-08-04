@@ -6,6 +6,7 @@
 - [graphite](https://github.com/jeo1/docker-templates/tree/graphite)
 - [influxdb](https://github.com/jeo1/docker-templates/tree/influxdb)
 - [jackett](https://github.com/jeo1/docker-templates/tree/jackett)
+- [jellyfin](https://github.com/jeo1/docker-templates/tree/jellyfin)
 - [kuma](https://github.com/jeo1/docker-templates/tree/kuma)
 - [plex](https://github.com/jeo1/docker-templates/tree/plex)
 - [nginx](https://github.com/jeo1/docker-templates/tree/nginx)

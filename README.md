@@ -3,6 +3,8 @@
 COMPOSE_PROJECT_NAME=graphite
 TIMEZONE=America/Toronto
 
+CONTAINER_NAME=graphite
+
 # Update
 GRAPHITE_CONFIG=<path to graphite config>
 GRAPHITE_STORAGE=<path to graphite storage>

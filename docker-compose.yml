@@ -2,7 +2,7 @@ services:
   graphite:
     image: graphiteapp/graphite-statsd
     pull_policy: always
-    container_name: graphite
+    container_name: "${CONTAINER_NAME}"
     restart: always
     network_mode: "host" 
     volumes:

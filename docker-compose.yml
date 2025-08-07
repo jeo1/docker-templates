@@ -2,7 +2,7 @@ services:
   tautulli:
     image: tautulli/tautulli
     pull_policy: always
-    container_name: tautulli
+    container_name: "${CONTAINER_NAME}"
     restart: always
     volumes:
       - "${TAUTULLI_CONFIG}:/config"

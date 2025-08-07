@@ -4,12 +4,12 @@ services:
     build: ./build/
     image: portainer-setup
     pull_policy: build
-    container_name: portainer-setup
+    container_name: "${SETUP_CONTAINER_NAME}"
     volumes:
       - "${PORTAINER_SSL}:/ssl"
 
   portainer:
-    container_name: portainer
+    container_name: "${CONTAINER_NAME}"
     image: portainer/portainer-ce:latest
     pull_policy: always
     restart: always

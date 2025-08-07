@@ -1,6 +1,7 @@
 services:
   influxdb2:
     image: influxdb:2
+    container_name: "${CONTAINER_NAME}"
     pull_policy: always
     ports:
       - "${INFLUXDB_PORT}:8086"

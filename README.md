@@ -3,6 +3,8 @@
 COMPOSE_PROJECT_NAME=influxdb
 TIMEZONE=America/Toronto
 
+CONTAINER_NAME=influxdb
+
 # Update
 INFLUXDB_DATA=<path to influxdb data>
 INFLUXDB_CONFIG=<path to influxdb config>

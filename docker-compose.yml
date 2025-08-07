@@ -3,14 +3,14 @@ services:
     build: ./build/
     image: audiobooks-setup
     pull_policy: build
-    container_name: audiobooks-setup
+    container_name: "${SETUP_CONTAINER_NAME}"
     env_file:
       - ./private/.env
 
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     pull_policy: always
-    container_name: "audiobooks-qbittorrent"
+    container_name: "${AUDIOBOOK_CONTAINER_NAME}"
     environment:
       - "PUID=1000"
       - "PGID=1000"

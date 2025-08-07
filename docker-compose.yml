@@ -1,6 +1,6 @@
 services:
   tdarr:
-    container_name: tdarr
+    container_name: "${CONTAINER_NAME}"
     image: ghcr.io/haveagitgat/tdarr:latest
     pull_policy: always
     restart: unless-stopped

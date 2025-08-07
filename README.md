@@ -3,6 +3,8 @@
 COMPOSE_PROJECT_NAME=tdarr
 TIMEZONE=America/Toronto
 
+CONTAINER_NAME=tdarr
+
 # Update
 TDARR_SERVER=<path to server>
 TDARR_CONFIG=<path to config>

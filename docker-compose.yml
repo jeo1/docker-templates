@@ -8,7 +8,7 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     pull_policy: always
-    container_name: plex
+    container_name: "${CONTAINER_NAME}"
     environment:
       - "PUID=1000"
       - "PGID=1000"

@@ -3,6 +3,8 @@
 COMPOSE_PROJECT_NAME=plex
 TIMEZONE=America/Toronto
 
+CONTAINER_NAME=plex
+
 DOCKER_MACVLAN_NETWORK=<name of docker network>
 PLEX_IP_ADDRESS=<ip address of plex container>
 

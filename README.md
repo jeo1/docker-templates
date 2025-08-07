@@ -3,6 +3,9 @@
 COMPOSE_PROJECT_NAME=nginx
 TIMEZONE=America/Toronto
 
+NGINX_CONTAINER_NAME=nginx
+SETUP_CONTAINER_NAME=nginx-setup
+
 # Update
 SSL=<path for ssl dir>
 NGINX=<path for nginx config dir>

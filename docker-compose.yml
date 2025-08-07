@@ -1,5 +1,6 @@
 services:
   prometheus:
+    container_name: "${CONTAINER_NAME}"
     image: prom/prometheus
     pull_policy: always
     restart: unless-stopped

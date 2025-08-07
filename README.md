@@ -3,6 +3,8 @@
 COMPOSE_PROJECT_NAME=jellyfin
 TIMEZONE=America/Toronto
 
+CONTAINER_NAME=jellyfin
+
 # Update
 JELLYFIN_CONFIG=<Path to jellyfin config>
 JELLYFIN_MEDIA_MOUNT=<Path to media>

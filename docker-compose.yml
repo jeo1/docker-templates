@@ -2,7 +2,7 @@
 services:
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
-    container_name: jellyfin
+    container_name: "${CONTAINER_NAME}"
     pull_policy: always
     restart: always
     environment:

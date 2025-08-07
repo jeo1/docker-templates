@@ -3,6 +3,8 @@
 COMPOSE_PROJECT_NAME=twitch-dvr
 TIMEZONE=America/Toronto
 
+CONTAINER_NAME=twitch-dvr
+
 DVR_DIR=<path to DVR/twitch dir>
 
 # Update

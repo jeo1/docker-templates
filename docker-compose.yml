@@ -2,7 +2,7 @@ services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     pull_policy: always
-    container_name: cadvisor
+    container_name: "${CONTAINER_NAME}"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro

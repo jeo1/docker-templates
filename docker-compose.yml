@@ -2,7 +2,7 @@ services:
   node-exporter:
     image: quay.io/prometheus/node-exporter:latest
     pull_policy: always
-    container_name: node-exporter
+    container_name: "${CONTAINER_NAME}"
     pid: host
     restart: always
     volumes:

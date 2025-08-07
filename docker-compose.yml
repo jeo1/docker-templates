@@ -2,7 +2,7 @@ services:
   jackett:
     image: lscr.io/linuxserver/jackett:latest
     pull_policy: always
-    container_name: jackett
+    container_name: "${CONTAINER_NAME}"
     environment:
       - PUID=1000
       - PGID=1000

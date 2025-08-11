@@ -3,6 +3,9 @@ name: Jackett Docker Compose Test
 on:
   push:
     branches: [jackett]
+    paths-ignore:
+      - README.md
+      - .gitignore
   pull_request:
 
 jobs:

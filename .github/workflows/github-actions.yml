@@ -51,7 +51,7 @@ jobs:
             echo "Waiting for qBittorrent... ($i)"
             sleep 1
           done
-          curl --fail $QBITTORRENT_URL || (echo "Sonarr did not respond" && exit 1)
+          curl --fail $QBITTORRENT_URL || (echo "qBittorrent did not respond" && exit 1)
 
       - name: Tear down Docker Compose
         run: docker compose down --volumes

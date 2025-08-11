@@ -2,7 +2,7 @@ name: Docker Compose - cAdvisor
 
 on:
   push:
-    branches: [node-exporter]
+    branches: [cadvisor]
     paths-ignore:
       - README.md
       - .gitignore

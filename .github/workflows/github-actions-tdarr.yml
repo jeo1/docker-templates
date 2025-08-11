@@ -1,4 +1,4 @@
-name: Docker Compose Test
+name: Tdarr
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
   pull_request:
 
 jobs:
-  docker-compose:
+  docker-compose-test:
     runs-on: ubuntu-latest
 
     steps:

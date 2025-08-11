@@ -1,4 +1,4 @@
-name: Jackett Docker Compose Test
+name: Jackett
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
   pull_request:
 
 jobs:
-  test-jackett-compose:
+  docker-compose-test:
     runs-on: ubuntu-latest
 
     steps:

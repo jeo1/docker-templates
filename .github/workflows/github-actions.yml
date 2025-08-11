@@ -2,7 +2,7 @@ name: Docker Compose Test
 
 on:
   push:
-    branches: [prometheus]
+    branches: [gitea]
     paths-ignore:
       - README.md
       - .gitignore

@@ -3,7 +3,7 @@ services:
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     pull_policy: always
-    container_name: sonarr
+    container_name: "${SONARR_CONTAINER_NAME}"
     volumes:
       - "${SONARR_CONFIG}:/config"
       - "${MEDIA}:/${ROOT_PATH}"
@@ -20,7 +20,7 @@ services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     pull_policy: always
-    container_name: sonarr-qbittorrent
+    container_name: "${SONARR_QBITTORRENT_CONTAINER_NAME}"
     environment:
       - "PUID=1000"
       - "PGID=1000"

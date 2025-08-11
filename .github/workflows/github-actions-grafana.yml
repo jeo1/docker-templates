@@ -2,7 +2,7 @@ name: Grafana
 
 on:
   push:
-    branches: [Grafana]
+    branches: [grafana]
     paths-ignore:
       - README.md
       - .gitignore

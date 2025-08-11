@@ -27,7 +27,7 @@ jobs:
           
       - name: Test Sonarr HTTP response
         run: |
-          EXTERNAL_SONARR_PORT=$(cat manifest.json | jq -r '.EXTERNAL_SONARR_PORT')
+          EXTERNAL_SONARR_PORT=$(cat manifest.json | jq -r '.sonarr_port')
           SONARR_URL=http://localhost:$EXTERNAL_SONARR_PORT
           for i in {1..30}; do
             if curl --silent --fail $SONARR_URL > /dev/null; then
@@ -41,7 +41,7 @@ jobs:
 
       - name: Test qBittorrent HTTP response
         run: |
-          EXTERNAL_QBITTORRENT_PORT=$(cat manifest.json | jq -r '.EXTERNAL_QBITTORRENT_PORT')
+          EXTERNAL_QBITTORRENT_PORT=$(cat manifest.json | jq -r '.sonarr_qbittorent_port')
           QBITTORRENT_URL=http://localhost:$EXTERNAL_QBITTORRENT_PORT
           for i in {1..30}; do
             if curl --silent --fail $QBITTORRENT_URL > /dev/null; then

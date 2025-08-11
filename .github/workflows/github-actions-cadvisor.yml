@@ -1,4 +1,4 @@
-name: Docker Compose - cAdvisor
+name: cAdvisor
 
 on:
   push:

@@ -1,0 +1,43 @@
+name: Jackett Docker Compose Test
+
+on:
+  push:
+    branches: [jackett]
+  pull_request:
+
+jobs:
+  test-jackett-compose:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install jinja-cli
+        run: |
+          pip3 install jinja-cli
+
+      - name: Create .env
+        run: |
+          jinja env.j2 --data manifest.json > .env
+
+      - name: Docker Compose up
+        run: |
+          docker compose up -d
+
+      - name: Test Jackett HTTP response
+        run: |
+          JACKETT_PORT=$(cat manifest.json | jq -r '.JACKETT_PORT')
+          JACKETT_URL=http://localhost:$JACKETT_PORT
+          for i in {1..30}; do
+            if curl --silent --fail $JACKETT_URL > /dev/null; then
+              echo "Jackett is up!"
+              break
+            fi
+            echo "Waiting for Jackett... ($i)"
+            sleep 1
+          done
+          curl --fail $JACKETT_URL || (echo "Jackett did not respond" && exit 1)
+
+      - name: Tear down Docker Compose
+        run: docker compose down --volumes

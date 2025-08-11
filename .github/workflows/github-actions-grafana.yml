@@ -24,6 +24,12 @@ jobs:
         run: |
           jinja env.j2 --data manifest.json > .env
 
+      - name: Create dirs
+        run: |
+          GRAFANA_CONFIG=$(cat manifest.json | jq -r '.GRAFANA_CONFIG')
+          mkdir -p $GRAFANA_CONFIG
+          chmod 777 $GRAFANA_CONFIG
+
       - name: Docker Compose up
         run: |
           docker compose up -d

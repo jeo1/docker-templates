@@ -1,4 +1,4 @@
-name: Docker Compose - Sonarr
+name: Sonarr
 
 on:
   push:

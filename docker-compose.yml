@@ -2,7 +2,7 @@ services:
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     pull_policy: always
-    container_name: radarr
+    container_name: "${RADARR_CONTAINER_NAME}"
     volumes:
       - "${RADARR_CONFIG}:/config"
       - "${RADARR_MEDIA}:/${ROOT_PATH}"
@@ -19,7 +19,7 @@ services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     pull_policy: always
-    container_name: radarr-qbittorrent
+    container_name: "${RADARR_QBITTORRENT_CONTAINER_NAME}"
     environment:
       - "PUID=1000"
       - "PGID=1000"

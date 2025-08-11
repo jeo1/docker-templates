@@ -24,7 +24,11 @@ jobs:
         run: |
           jinja env.j2 --data manifest.json > .env
           PROMETHEUS_CONFIG=$(cat manifest.json | jq -r '.PROMETHEUS_CONFIG')
+          PROMETHEUS_DATA=$(cat manifest.json | jq -r '.PROMETHEUS_DATA')
           mkdir -p $PROMETHEUS_CONFIG
+          mkdir -p $PROMETHEUS_DATA
+          chmod 755 $PROMETHEUS_CONFIG
+          chmod 755 $PROMETHEUS_DATA
           jinja prometheus.j2 --data manifest.json > $PROMETHEUS_CONFIG/prometheus.yml
 
       - name: Docker Compose up

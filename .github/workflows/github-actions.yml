@@ -3,6 +3,9 @@ name: Docker Compose Test
 on:
   push:
     branches: [radarr]
+    paths-ignore:
+      - README.md
+      - .gitignore
   pull_request:
 
 jobs:

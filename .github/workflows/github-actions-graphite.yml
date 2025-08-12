@@ -8,6 +8,9 @@ on:
       - .gitignore
   pull_request:
 
+env:
+  MANIFEST: .github/manifest.json
+
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest
@@ -16,31 +19,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install jinja-cli
-        run: |
-          pip3 install jinja-cli
+      - uses: ./.github/actions/generate-env-file
+        with:
+          manifest: ${{ env.MANIFEST }}
+          env_template: env.j2
 
-      - name: Create .env
-        run: |
-          jinja env.j2 --data manifest.json > .env
-
-      - name: Docker Compose up
-        run: |
-          docker compose up -d
-          
-      - name: Test HTTP response
+      - uses: ./.github/actions/docker-compose-up
+        
+      - name: Get service url
         run: |
           GRAPHITE_PORT=$(cat manifest.json | jq -r '.GRAPHITE_PORT')
-          URL=http://localhost:$GRAPHITE_PORT
-          for i in {1..30}; do
-            if curl --silent --fail $URL > /dev/null; then
-              echo "Service is up!"
-              break
-            fi
-            echo "Waiting for Service... ($i)"
-            sleep 1
-          done
-          curl --fail $URL || (echo "Service did not respond" && exit 1)
+          echo "URL=http://localhost:$GRAPHITE_PORT" >> $GITHUB_ENV
 
-      - name: Tear down Docker Compose
-        run: docker compose down --volumes
+      - uses: ./.github/actions/test-http-response
+        with:
+          service_url: ${{ env.URL }}
+ 
+      - uses: ./.github/actions/docker-compose-down

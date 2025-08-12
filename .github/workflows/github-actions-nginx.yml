@@ -23,7 +23,13 @@ jobs:
       - name: Create .env
         run: |
           jinja env.j2 --data manifest.json > .env
-          
+
+      - name: Create dirs and config
+        run: |
+          NGINX_SERVERS=$(cat manifest.json | jq -r '.NGINX_SERVERS')
+          mkdir -p $NGINX_SERVERS
+          cp .github/nginx/test.conf $NGINX_SERVERS/
+
       - name: Docker Compose up
         run: |
           docker compose up -d

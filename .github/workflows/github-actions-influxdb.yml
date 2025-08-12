@@ -1,0 +1,50 @@
+name: InfluxDB
+
+on:
+  push:
+    branches: [influxdb]
+    paths-ignore:
+      - README.md
+      - .gitignore
+  pull_request:
+
+jobs:
+  docker-compose-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install jinja-cli
+        run: |
+          pip3 install jinja-cli
+
+      - name: Create .env
+        run: |
+          jinja env.j2 --data manifest.json > .env
+          mkdir private
+          jinja .env.influxdb2-admin-username.j2 --data manifest.json > private/.env.influxdb2-admin-username
+          jinja .env.influxdb2-admin-password.j2 --data manifest.json > private/.env.influxdb2-admin-password
+          jinja .env.influxdb2-admin-token.j2 --data manifest.json > private/.env.influxdb2-admin-token
+
+      - name: Docker Compose up
+        run: |
+          docker compose up -d
+          
+      - name: Test HTTP response
+        run: |
+          INFLUXDB_PORT=$(cat manifest.json | jq -r '.INFLUXDB_PORT')
+          URL=http://localhost:$INFLUXDB_PORT
+          for i in {1..30}; do
+            if curl --silent --fail $URL > /dev/null; then
+              echo "Service is up!"
+              break
+            fi
+            echo "Waiting for Service... ($i)"
+            sleep 1
+          done
+          curl --fail $URL || (echo "Service did not respond" && exit 1)
+
+      - name: Tear down Docker Compose
+        run: docker compose down --volumes

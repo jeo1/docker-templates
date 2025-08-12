@@ -10,7 +10,7 @@ on:
 
 env:
   MANIFEST: .github/manifest.json
-  
+
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest
@@ -25,11 +25,11 @@ jobs:
 
       - name: Create .env
         run: |
-          jinja env.j2 --data manifest.json > .env
+          jinja env.j2 --data ${{ env.MANIFEST }} > .env
 
       - name: Create dirs
         run: |
-          GRAFANA_CONFIG=$(cat manifest.json | jq -r '.GRAFANA_CONFIG')
+          GRAFANA_CONFIG=$(cat ${{ env.MANIFEST }} | jq -r '.GRAFANA_CONFIG')
           mkdir -p $GRAFANA_CONFIG
           chmod 777 $GRAFANA_CONFIG
 
@@ -39,7 +39,7 @@ jobs:
           
       - name: Test HTTP response
         run: |
-          GRAFANA_PORT=$(cat manifest.json | jq -r '.GRAFANA_PORT')
+          GRAFANA_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.GRAFANA_PORT')
           URL=http://localhost:$GRAFANA_PORT
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then

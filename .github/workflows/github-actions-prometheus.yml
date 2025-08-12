@@ -8,6 +8,9 @@ on:
       - .gitignore
   pull_request:
 
+env:
+  MANIFEST: .github/manifest.json
+
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest
@@ -22,17 +25,17 @@ jobs:
 
       - name: Create .env
         run: |
-          jinja env.j2 --data manifest.json > .env
+          jinja env.j2 --data ${{ env.MANIFEST }} > .env
           
       - name: Create dirs and config
         run: |
-          PROMETHEUS_CONFIG=$(cat manifest.json | jq -r '.PROMETHEUS_CONFIG')
-          PROMETHEUS_DATA=$(cat manifest.json | jq -r '.PROMETHEUS_DATA')
+          PROMETHEUS_CONFIG=$(cat ${{ env.MANIFEST }} | jq -r '.PROMETHEUS_CONFIG')
+          PROMETHEUS_DATA=$(cat ${{ env.MANIFEST }} | jq -r '.PROMETHEUS_DATA')
           mkdir -p $PROMETHEUS_CONFIG
           mkdir -p $PROMETHEUS_DATA
           chmod 755 $PROMETHEUS_CONFIG
           chmod 777 $PROMETHEUS_DATA
-          jinja prometheus.j2 --data manifest.json > $PROMETHEUS_CONFIG/prometheus.yml
+          jinja prometheus.j2 --data ${{ env.MANIFEST }} > $PROMETHEUS_CONFIG/prometheus.yml
 
       - name: Docker Compose up
         run: |
@@ -40,7 +43,7 @@ jobs:
           
       - name: Test HTTP response
         run: |
-          PROMETHEUS_PORT=$(cat manifest.json | jq -r '.PROMETHEUS_PORT')
+          PROMETHEUS_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.PROMETHEUS_PORT')
           URL=http://localhost:$PROMETHEUS_PORT
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then

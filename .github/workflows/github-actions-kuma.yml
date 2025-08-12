@@ -24,7 +24,7 @@ jobs:
         run: |
           pip3 install jinja-cli
 
-      - uses: ./actions/generate-env-file
+      - uses: ./actions/generate-env-file.yml
         with:
           manifest: ${{ env.MANIFEST }}
           env_template: env.j2

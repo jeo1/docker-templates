@@ -8,6 +8,9 @@ on:
       - .gitignore
   pull_request:
 
+env:
+  MANIFEST: .github/manifest.json
+
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest
@@ -22,11 +25,11 @@ jobs:
 
       - name: Create .env
         run: |
-          jinja env.j2 --data manifest.json > .env
+          jinja env.j2 --data ${{ env.MANIFEST }} > .env
           mkdir private
-          jinja .env.influxdb2-admin-username.j2 --data manifest.json > private/.env.influxdb2-admin-username
-          jinja .env.influxdb2-admin-password.j2 --data manifest.json > private/.env.influxdb2-admin-password
-          jinja .env.influxdb2-admin-token.j2 --data manifest.json > private/.env.influxdb2-admin-token
+          jinja .env.influxdb2-admin-username.j2 --data ${{ env.MANIFEST }} > private/.env.influxdb2-admin-username
+          jinja .env.influxdb2-admin-password.j2 --data ${{ env.MANIFEST }} > private/.env.influxdb2-admin-password
+          jinja .env.influxdb2-admin-token.j2 --data ${{ env.MANIFEST }} > private/.env.influxdb2-admin-token
 
       - name: Docker Compose up
         run: |
@@ -34,7 +37,7 @@ jobs:
           
       - name: Test HTTP response
         run: |
-          INFLUXDB_PORT=$(cat manifest.json | jq -r '.INFLUXDB_PORT')
+          INFLUXDB_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.INFLUXDB_PORT')
           URL=http://localhost:$INFLUXDB_PORT
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then

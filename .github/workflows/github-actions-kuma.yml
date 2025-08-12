@@ -20,11 +20,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install jinja-cli
-        run: |
-          pip3 install jinja-cli
-
-      - uses: ./actions/a
+      - uses: ./actions/generate-env-file
         with:
           manifest: ${{ env.MANIFEST }}
           env_template: env.j2

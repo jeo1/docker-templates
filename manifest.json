@@ -1,0 +1,5 @@
+{
+    "SSL": "./ssl",
+    "NGINX": "./nginx",
+    "NGINX_PORT": 80
+}

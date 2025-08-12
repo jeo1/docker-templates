@@ -27,19 +27,13 @@ jobs:
 
       - uses: ./.github/actions/docker-compose-up
           
-      - name: Test HTTP response
+      - name: Get service url
         run: |
           kuma_port=$(cat $MANIFEST | jq -r '.kuma_port')
-          URL=http://localhost:$kuma_port
-          for i in {1..30}; do
-            if curl --silent --fail $URL > /dev/null; then
-              echo "✅ Service is up!"
-              break
-            fi
-            echo "Waiting for Service... ($i)"
-            sleep 1
-          done
-          curl --fail $URL || (echo "❌ Service did not respond" && exit 1)
+          echo "URL=http://localhost:$kuma_port" >> $GITHUB_ENV
 
-      - name: Tear down Docker Compose
-        run: docker compose down --volumes
+      - uses: ./.github/actions/test-http-response
+        with:
+          service_url: ${{ env.URL }}
+ 
+      - uses: ./.github/actions/docker-compose-down

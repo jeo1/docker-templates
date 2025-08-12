@@ -8,9 +8,6 @@ on:
       - .gitignore
   pull_request:
 
-env:
-  MANIFEST: .github/manifest.json
-  
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest
@@ -19,20 +16,37 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: ./.github/actions/generate-env-file
-        with:
-          manifest: ${{ env.MANIFEST }}
-          env_template: env.j2
-
-      - uses: ./.github/actions/docker-compose-up
-          
-      - name: Get service url
+      - name: Install jinja-cli
         run: |
-          GRAFANA_PORT=$(cat $MANIFEST | jq -r '.GRAFANA_PORT')
-          echo "URL=http://localhost:$GRAFANA_PORT" >> $GITHUB_ENV
+          pip3 install jinja-cli
 
-      - uses: ./.github/actions/test-http-response
-        with:
-          service_url: ${{ env.URL }}
- 
-      - uses: ./.github/actions/docker-compose-down
+      - name: Create .env
+        run: |
+          jinja env.j2 --data manifest.json > .env
+
+      - name: Create dirs
+        run: |
+          GRAFANA_CONFIG=$(cat manifest.json | jq -r '.GRAFANA_CONFIG')
+          mkdir -p $GRAFANA_CONFIG
+          chmod 777 $GRAFANA_CONFIG
+
+      - name: Docker Compose up
+        run: |
+          docker compose up -d
+          
+      - name: Test HTTP response
+        run: |
+          GRAFANA_PORT=$(cat manifest.json | jq -r '.GRAFANA_PORT')
+          URL=http://localhost:$GRAFANA_PORT
+          for i in {1..30}; do
+            if curl --silent --fail $URL > /dev/null; then
+              echo "Service is up!"
+              break
+            fi
+            echo "Waiting for Service... ($i)"
+            sleep 1
+          done
+          curl --fail $URL || (echo "Service did not respond" && exit 1)
+
+      - name: Tear down Docker Compose
+        run: docker compose down --volumes

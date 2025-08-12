@@ -21,3 +21,4 @@ runs:
       run: |
         jinja "${{ inputs.env_template }}" --data "${{ inputs.manifest }}" > "${{ inputs.env_file }}"
       shell: bash
+      

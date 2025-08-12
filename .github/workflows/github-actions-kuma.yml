@@ -20,14 +20,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: ./.github/actions/a
+      - uses: ./.github/actions/generate-env-file
         with:
           manifest: ${{ env.MANIFEST }}
           env_template: env.j2
 
-      - name: Docker Compose up
-        run: |
-          docker compose up -d
+      - uses: ./.github/actions/docker-compose-up
           
       - name: Test HTTP response
         run: |

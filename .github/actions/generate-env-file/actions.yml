@@ -1,0 +1,16 @@
+name: "Generate .env file"
+description: "Generates .env using jinja-cli and manifest"
+inputs:
+  manifest:
+    required: true
+    description: "Path to manifest file"
+  env_template:
+    required: true
+    description: "Path to Jinja template"
+  env_file:
+    default: ".env"
+    description: ".env output"
+runs:
+  using: "composite"
+  steps:
+    - run: jinja ${{ inputs.env_template }} --data ${{ inputs.manifest }} > ${{ inputs.env_file }}

@@ -8,6 +8,9 @@ on:
       - .gitignore
   pull_request:
 
+env:
+  MANIFEST: .github/manifest.json
+
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest
@@ -22,7 +25,7 @@ jobs:
 
       - name: Create .env
         run: |
-          jinja env.j2 --data manifest.json > .env
+          jinja env.j2 --data ${{ env.MANIFEST }} > .env
 
       - name: Docker Compose up
         run: |
@@ -30,7 +33,7 @@ jobs:
           
       - name: Test HTTP response
         run: |
-          PORTAINER_LEGACY_HTTP_PORT=$(cat manifest.json | jq -r '.PORTAINER_LEGACY_HTTP_PORT')
+          PORTAINER_LEGACY_HTTP_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.PORTAINER_LEGACY_HTTP_PORT')
           URL=http://localhost:$PORTAINER_LEGACY_HTTP_PORT
           for i in {1..30}; do
             if curl --insecure --silent --fail $URL > /dev/null; then

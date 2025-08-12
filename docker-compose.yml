@@ -14,9 +14,9 @@ services:
     pull_policy: always
     restart: always
     ports:
-      - "8000:8000"
-      - "9000:9000"
-      - "443:9443"
+      - "${PORTAINER_TCP_PORT}:8000"
+      - "${PORTAINER_LEGACY_HTTP_PORT}:9000"
+      - "${PORTAINER_SSL_PORT}:9443"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "${PORTAINER_CONFIG}:/data"

@@ -8,6 +8,9 @@ on:
       - .gitignore
   pull_request:
 
+env:
+  MANIFEST: .github/manifest.json
+  
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest
@@ -22,7 +25,7 @@ jobs:
 
       - name: Create .env
         run: |
-          jinja env.j2 --data manifest.json > .env
+          jinja env.j2 --data ${{ env.MANIFEST }} > .env
 
       - name: Docker Compose up
         run: |
@@ -30,7 +33,7 @@ jobs:
           
       - name: Test Tdarr HTTP response
         run: |
-          TDARR_WEB_PORT=$(cat manifest.json | jq -r '.TDARR_WEB_PORT')
+          TDARR_WEB_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.TDARR_WEB_PORT')
           URL=http://localhost:$TDARR_WEB_PORT
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then
@@ -44,7 +47,7 @@ jobs:
 
       - name: Test Tdarr Server Port response
         run: |
-          TDARR_SERVER_PORT=$(cat manifest.json | jq -r '.TDARR_SERVER_PORT')
+          TDARR_SERVER_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.TDARR_SERVER_PORT')
           URL=http://localhost:$TDARR_SERVER_PORT
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then

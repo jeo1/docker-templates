@@ -46,7 +46,7 @@ jobs:
             echo "Waiting for Service... ($i)"
             sleep 1
           done
-          curl --insecure --fail $URL || (echo "Service did not respond" && exit 1)
+          curl --insecure --location --fail $URL || (echo "Service did not respond" && exit 1)
 
       - name: Tear down Docker Compose
         run: docker compose down --volumes

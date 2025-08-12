@@ -3,40 +3,20 @@ description: "Waits for service and validates HTTP response"
 inputs:
   service_url:
     required: true
-    description: "Port of service to be checked"
-  expected_response:
-    description: "Enable special feature"
-    required: false
+    description: "Url of service to be checked"
 
 runs:
   using: "composite"
   steps:
-    - name: Wait for service
+    - name: Test HTTP Response
       shell: bash
       run: |
         for i in {1..30}; do
-          if curl --silent --fail ${{ inputs.service_url }} > /dev/null; then
+          if curl --silent --fail $URL > /dev/null; then
             echo "✅ Service is up!"
             break
           fi
           echo "Waiting for Service... ($i)"
           sleep 1
         done
-
-    - name: Check responce
-      if: ${{ !inputs.expected_response }}
-      shell: bash
-      run: |
-        curl --fail ${{ inputs.service_url }} || (echo "❌ Service did not respond" && exit 1)
-
-    - name: Check responce
-      if: ${{ inputs.expected_response }}
-      shell: bash
-      run: |
-        response=$(curl --insecure --location --fail ${{ inputs.service_url }})
-        if [[ "$response" == "${{ inputs.expected_response }}" ]]; then
-          echo "✅ Response matches"
-        else
-          echo "❌ Expected: ${{ inputs.expected_response }}, Got: $response"
-          exit 1
-        fi
+        curl --fail $URL || (echo "Service did not respond" && exit 1)

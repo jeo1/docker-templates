@@ -69,7 +69,7 @@ jobs:
           
           response=$(curl --insecure --location --fail $URL)
           if [[ "$response" == "${{ env.HTTP_MSG }}" ]]; then
-            echo "✅ Response matches: ${{ env.HTTP_MSG }}"
+            echo "✅ Response matches"
           else
             echo "❌ Expected: ${{ env.HTTP_MSG }}, Got: $response"
             exit 1

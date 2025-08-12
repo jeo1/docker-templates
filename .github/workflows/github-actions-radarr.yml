@@ -8,6 +8,9 @@ on:
       - .gitignore
   pull_request:
 
+env:
+  MANIFEST: .github/manifest.json
+  
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest
@@ -22,7 +25,7 @@ jobs:
 
       - name: Create .env
         run: |
-          jinja env.j2 --data manifest.json > .env
+          jinja env.j2 --data ${{ env.MANIFEST }} > .env
 
       - name: Docker Compose up
         run: |
@@ -30,7 +33,7 @@ jobs:
           
       - name: Test Radarr HTTP response
         run: |
-          RADARR_PORT=$(cat manifest.json | jq -r '.RADARR_PORT')
+          RADARR_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.RADARR_PORT')
           RADARR_URL=http://localhost:$RADARR_PORT
           for i in {1..30}; do
             if curl --silent --fail $RADARR_URL > /dev/null; then
@@ -44,7 +47,7 @@ jobs:
 
       - name: Test qBittorrent HTTP response
         run: |
-          RADARR_QBITTORRENT_PORT=$(cat manifest.json | jq -r '.RADARR_QBITTORRENT_PORT')
+          RADARR_QBITTORRENT_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.RADARR_QBITTORRENT_PORT')
           QBITTORRENT_URL=http://localhost:$RADARR_QBITTORRENT_PORT
           for i in {1..30}; do
             if curl --silent --fail $QBITTORRENT_URL > /dev/null; then

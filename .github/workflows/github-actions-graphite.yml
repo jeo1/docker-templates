@@ -25,7 +25,7 @@ jobs:
 
       - name: Create .env
         run: |
-          jinja env.j2 --data manifest.json > .env
+          jinja env.j2 --data ${{ env.MANIFEST }} > .env
 
       - name: Docker Compose up
         run: |
@@ -33,7 +33,7 @@ jobs:
           
       - name: Test HTTP response
         run: |
-          GRAPHITE_PORT=$(cat manifest.json | jq -r '.GRAPHITE_PORT')
+          GRAPHITE_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.GRAPHITE_PORT')
           URL=http://localhost:$GRAPHITE_PORT
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then

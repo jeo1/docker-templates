@@ -30,8 +30,8 @@ jobs:
           
       - name: Test HTTP response
         run: |
-          PORTAINER_SSL_PORT=$(cat manifest.json | jq -r '.PORTAINER_SSL_PORT')
-          URL=http://localhost:$PORTAINER_SSL_PORT
+          PORTAINER_LEGACY_HTTP_PORT=$(cat manifest.json | jq -r '.PORTAINER_LEGACY_HTTP_PORT')
+          URL=http://localhost:$PORTAINER_LEGACY_HTTP_PORT
           for i in {1..30}; do
             if curl --insecure --silent --fail $URL > /dev/null; then
               echo "Service is up!"

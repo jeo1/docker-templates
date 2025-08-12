@@ -20,7 +20,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: ./actions/a
+      - uses: ./.github/actions/a
         with:
           manifest: ${{ env.MANIFEST }}
           env_template: env.j2

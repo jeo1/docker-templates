@@ -8,6 +8,10 @@ on:
       - .gitignore
   pull_request:
 
+env:
+  NGINX_TEST_SERVER_FILE: .github/nginx/server.conf
+
+
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest
@@ -28,7 +32,7 @@ jobs:
         run: |
           NGINX_SERVERS=$(cat manifest.json | jq -r '.NGINX_SERVERS')
           mkdir -p $NGINX_SERVERS
-          cp .github/nginx/server.conf $NGINX_SERVERS/test.conf
+          cp $NGINX_TEST_SERVER_FILE $NGINX_SERVERS/test.conf
 
       - name: Docker Compose up
         run: |

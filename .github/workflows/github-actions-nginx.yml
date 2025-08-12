@@ -11,12 +11,14 @@ on:
 env:
   NGINX_TEST_SERVER_FILE: .github/nginx/server.conf
   NGINX_TEST_UPSTREAM_FILE: .github/nginx/upstream.conf
-  HTTP_MSG: "Hello there"
 
 
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest
+
+    env:
+      HTTP_MSG: "Hello there"
 
     services:
       backend:
@@ -25,7 +27,7 @@ jobs:
         ports:
           - 5678:5678
         env:
-          ECHO_TEXT: $HTTP_MSG
+          ECHO_TEXT: ${{ env.HTTP_MSG }}
 
     steps:
       - name: Checkout code

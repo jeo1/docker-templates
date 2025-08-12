@@ -13,4 +13,11 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: jinja ${{ inputs.env_template }} --data ${{ inputs.manifest }} > ${{ inputs.env_file }}
+    - name: Install jinja-cli
+      run: pip3 install jinja-cli
+      shell: bash
+      
+    - name: Generate .env file
+      run: |
+        jinja "${{ inputs.env_template }}" --data "${{ inputs.manifest }}" > "${{ inputs.env_file }}"
+      shell: bash

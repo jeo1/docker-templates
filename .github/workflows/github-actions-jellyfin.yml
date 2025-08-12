@@ -7,6 +7,9 @@ on:
       - README.md
       - .gitignore
   pull_request:
+  
+env:
+  MANIFEST: .github/manifest.json
 
 jobs:
   docker-compose-test:
@@ -22,7 +25,7 @@ jobs:
 
       - name: Create .env
         run: |
-          jinja env.j2 --data manifest.json > .env
+          jinja env.j2 --data ${{ env.MANIFEST }} > .env
 
       - name: Docker Compose up
         run: |
@@ -30,7 +33,7 @@ jobs:
           
       - name: Test HTTP response
         run: |
-          JELLYFIN_WEB_PORT=$(cat manifest.json | jq -r '.JELLYFIN_WEB_PORT')
+          JELLYFIN_WEB_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.JELLYFIN_WEB_PORT')
           URL=http://localhost:$JELLYFIN_WEB_PORT
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then

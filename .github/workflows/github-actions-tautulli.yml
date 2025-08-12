@@ -22,7 +22,7 @@ jobs:
 
       - name: Create .env
         run: |
-          jinja env.j2 --data manifest.json > .env
+          jinja env.j2 --data ${{ env.MANIFEST }} > .env
 
       - name: Docker Compose up
         run: |
@@ -30,7 +30,7 @@ jobs:
           
       - name: Test HTTP response
         run: |
-          TAUTULLI_PORT=$(cat manifest.json | jq -r '.TAUTULLI_PORT')
+          TAUTULLI_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.TAUTULLI_PORT')
           URL=http://localhost:$TAUTULLI_PORT
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then

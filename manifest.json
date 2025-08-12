@@ -1,5 +1,5 @@
 {
-    "SSL": "./ssl",
-    "NGINX": "./nginx",
+    "SSL_CONFIG": "./ssl",
+    "NGINX_CONFIG": "./nginx",
     "NGINX_PORT": 80
 }

@@ -19,14 +19,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: ./.github/actions/generate-env-file
-        with:
-          manifest: ${{ env.MANIFEST }}
-          env_template: env.j2
+      - name: Install jinja-cli
+        run: |
+          pip3 install jinja-cli
 
       - name: Create .env
         run: |
-          jinja env.j2 --data ${{ env.MANIFEST }} > .env
+          jinja env.j2 --data manifest.json > .env
 
       - name: Docker Compose up
         run: |
@@ -34,7 +33,7 @@ jobs:
           
       - name: Test HTTP response
         run: |
-          GRAPHITE_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.GRAPHITE_PORT')
+          GRAPHITE_PORT=$(cat manifest.json | jq -r '.GRAPHITE_PORT')
           URL=http://localhost:$GRAPHITE_PORT
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then
@@ -46,8 +45,5 @@ jobs:
           done
           curl --fail $URL || (echo "Service did not respond" && exit 1)
 
-      - uses: ./.github/actions/test-http-response
-        with:
-          service_url: ${{ env.URL }}
- 
-      - uses: ./.github/actions/docker-compose-down
+      - name: Tear down Docker Compose
+        run: docker compose down --volumes

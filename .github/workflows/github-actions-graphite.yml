@@ -24,14 +24,6 @@ jobs:
           manifest: ${{ env.MANIFEST }}
           env_template: env.j2
 
-<<<<<<< HEAD
-      - uses: ./.github/actions/docker-compose-up
-        
-      - name: Get service url
-        run: |
-          GRAPHITE_PORT=$(cat manifest.json | jq -r '.GRAPHITE_PORT')
-          echo "URL=http://localhost:$GRAPHITE_PORT" >> $GITHUB_ENV
-=======
       - name: Create .env
         run: |
           jinja env.j2 --data ${{ env.MANIFEST }} > .env
@@ -53,7 +45,6 @@ jobs:
             sleep 1
           done
           curl --fail $URL || (echo "Service did not respond" && exit 1)
->>>>>>> bbffcba (update manifest)
 
       - uses: ./.github/actions/test-http-response
         with:

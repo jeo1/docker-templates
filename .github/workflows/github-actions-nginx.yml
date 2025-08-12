@@ -10,11 +10,22 @@ on:
 
 env:
   NGINX_TEST_SERVER_FILE: .github/nginx/server.conf
+  NGINX_TEST_UPSTREAM_FILE: .github/nginx/upstream.conf
+  HTTP_MSG: "Hello there"
 
 
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest
+
+    services:
+      backend:
+        image: hashicorp/http-echo
+        options: --name backend
+        ports:
+          - 5678:5678
+        env:
+          ECHO_TEXT: "$HTTP_MSG"
 
     steps:
       - name: Checkout code
@@ -31,8 +42,11 @@ jobs:
       - name: Create dirs and config
         run: |
           NGINX_SERVERS=$(cat manifest.json | jq -r '.NGINX_SERVERS')
+          NGINX_UPSTREAM=$(cat manifest.json | jq -r '.NGINX_UPSTREAM')
           mkdir -p $NGINX_SERVERS
+          mkdir -p $NGINX_UPSTREAM
           cp $NGINX_TEST_SERVER_FILE $NGINX_SERVERS/test.conf
+          cp $NGINX_TEST_UPSTREAM_FILE $NGINX_UPSTREAM/test.conf
 
       - name: Docker Compose up
         run: |

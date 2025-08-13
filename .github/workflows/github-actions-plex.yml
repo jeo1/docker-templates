@@ -81,7 +81,8 @@ jobs:
           PLEX_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.PLEX_PORT')
           URL=http://${{ env.CONTAINER_IP }}:$PLEX_PORT
           sleep 5
-          curl $URL
+          apt install -y nmap
+          nmap ${{ env.CONTAINER_IP }} -p-
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then
               echo "Service is up!"

@@ -59,14 +59,35 @@ jobs:
         run: |
           pip3 install jinja-cli
 
-      - name: Create .env
+      - name: Create .envs
         run: |
           jinja env.j2 \
             --define PLEX_IP_ADDRESS ${{ env.CONTAINER_IP }} \
             --data ${{ env.MANIFEST }} > .env
-      
+          mkdir -p private
+          jinja env-private.j2 --data ${{ env.MANIFEST }} > private/.env
+
+      - name: Docker Compose up
+        run: |
+          docker compose up -d
+
+      - name: Test HTTP response
+        run: |
+          PLEX_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.PLEX_PORT')
+          URL=http://${{ env.CONTAINER_IP }}:$PLEX_PORT
+          for i in {1..30}; do
+            if curl --silent --fail $URL > /dev/null; then
+              echo "Service is up!"
+              break
+            fi
+            echo "Waiting for Service... ($i)"
+            sleep 1
+          done
+          curl --fail $URL || (echo "Service did not respond" && exit 1)
+
       - name: Cleanup
         if: always()
         run: |
+          docker compose down --volumes
           docker network rm macvlan-net || true
           

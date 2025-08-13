@@ -48,14 +48,11 @@ jobs:
       - name: Docker Compose up
         run: |
           docker compose up -d
-          sleep 5
-          docker compose ps
-          
-          
+                    
       - name: Test HTTP response
         run: |
           NODE_EXPORTER_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.NODE_EXPORTER_PORT')
-          URL=http://localhost:$NODE_EXPORTER_PORT
+          URL=http://0.0.0.0:$NODE_EXPORTER_PORT
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then
               echo "Service is up!"

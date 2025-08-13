@@ -1,3 +1,5 @@
 {
-
+    "DOCKER_MACVLAN_NETWORK": "test_macvlan_network",
+    "PLEX_MEDIA_MOUNT": "./mnt",
+    "PLEX_CONFIG": "./config"
 }

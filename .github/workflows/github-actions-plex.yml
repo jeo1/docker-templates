@@ -11,6 +11,7 @@ on:
 env:
   MANIFEST: .github/manifest.json
   TEST_CONTAINER_NAME: test-container
+  PLEX_IP_ADDRESS_KEY: PLEX_IP_ADDRESS
 
 jobs:
   setup-macvlan-network:
@@ -19,14 +20,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Install jinja-cli
-        run: |
-          pip3 install jinja-cli
-
-      - name: Create .env
-        run: |
-          jinja env.j2 --data ${{ env.MANIFEST }} > .env
       
       - name: Create Docker macvlan network
         run: |
@@ -62,6 +55,17 @@ jobs:
           docker stop ${{ env.TEST_CONTAINER_NAME }}
           docker rm ${{ env.TEST_CONTAINER_NAME }}
 
+      - name: Install jinja-cli
+        run: |
+          pip3 install jinja-cli
+
+      - name: Create .env
+        run: |
+          jinja env.j2 \
+            --data ${{ env.MANIFEST }} \
+            --define ${{ env.PLEX_IP_ADDRESS_KEY }}=$CONTAINER_IP
+            > .env
+          cat .env
       
       - name: Cleanup
         if: always()

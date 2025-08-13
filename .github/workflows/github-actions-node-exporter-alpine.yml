@@ -26,11 +26,11 @@ jobs:
       - name: Install dependencies
         run: |
           apk update
-          apk add docker-cli docker-compose bash curl python3 py3-pip
-          pip3 install jinja-cli
+          apk add docker-cli docker-compose bash curl jinja2-cli
 
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Create .env
         run: |
           jinja env.j2 --data ${{ env.MANIFEST }} > .env
@@ -55,4 +55,3 @@ jobs:
 
       - name: Tear down Docker Compose
         run: docker compose down --volumes
-        

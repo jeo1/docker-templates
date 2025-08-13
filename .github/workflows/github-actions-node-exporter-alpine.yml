@@ -27,6 +27,8 @@ jobs:
         run: |
           apk update
           apk add docker-cli docker-compose bash curl python3 py3-pip
+          python3 -m venv .venv
+          . .venv/bin/activate
           pip3 install jinja-cli
 
       - name: Checkout code
@@ -34,6 +36,7 @@ jobs:
         
       - name: Create .env
         run: |
+          . .venv/bin/activate
           jinja env.j2 --data ${{ env.MANIFEST }} > .env
 
       - name: Docker Compose up

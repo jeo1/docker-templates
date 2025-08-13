@@ -7,7 +7,7 @@ on:
       - README.md
       - .gitignore
   pull_request:
-  
+
 env:
   MANIFEST: .github/manifest.json
   TEST_CONTAINER_NAME: test-container
@@ -26,7 +26,6 @@ jobs:
           DOCKER_MACVLAN_NETWORK=$(cat ${{ env.MANIFEST }} | jq -r '.DOCKER_MACVLAN_NETWORK')
           echo "DOCKER_NETWORK_NAME=$DOCKER_MACVLAN_NETWORK" >> $GITHUB_ENV
 
-      
       - name: Create Docker macvlan network
         run: |
           DEFAULT_INTERFACE=$(ip route show default | awk '/default/ { print $5 }' | head -1)
@@ -44,7 +43,7 @@ jobs:
             --gateway=$GATEWAY \
             -o parent=$DEFAULT_INTERFACE \
             ${{ env.DOCKER_NETWORK_NAME }}
-      
+
       - name: Test macvlan network with container and get valid ip
         run: |
           docker run -d --name ${{ env.TEST_CONTAINER_NAME }} \
@@ -87,9 +86,11 @@ jobs:
               break
             fi
             echo "Waiting for Service... ($i)"
+            docker compose ps
             sleep 1
           done
           curl --fail $URL || (echo "Service did not respond" && exit 1)
+          
 
       - name: Cleanup
         if: always()

@@ -63,7 +63,7 @@ jobs:
         run: |
           jinja env.j2 \
             --data ${{ env.MANIFEST }} \
-            --define ${{ env.PLEX_IP_ADDRESS_KEY }}=$CONTAINER_IP
+            --define ${{ env.PLEX_IP_ADDRESS_KEY }} $CONTAINER_IP \
             > .env
           cat .env
       

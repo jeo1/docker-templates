@@ -18,10 +18,7 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-    
+      
     - name: Create Docker macvlan network
       run: |
         DEFAULT_INTERFACE=$(ip route show default | awk '/default/ { print $5 }' | head -1)

@@ -48,7 +48,10 @@ jobs:
       - name: Docker Compose up
         run: |
           docker compose up -d
-                    
+          sleep 5
+          docker compose
+          ip a
+
       - name: Test HTTP response
         run: |
           NODE_EXPORTER_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.NODE_EXPORTER_PORT')

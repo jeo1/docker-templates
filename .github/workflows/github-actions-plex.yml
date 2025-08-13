@@ -17,46 +17,54 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Create Docker macvlan network
-      run: |
-        DEFAULT_INTERFACE=$(ip route show default | awk '/default/ { print $5 }' | head -1)
-        SUBNET=$(ip addr show $DEFAULT_INTERFACE | grep -E 'inet [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | awk '{print $2}' | head -1)
-        if [ -z "$SUBNET" ] || [ "$SUBNET" = "default" ]; then
-          SUBNET="10.1.0.0/16"
-          GATEWAY="10.1.0.1"
-        else
-          NETWORK=$(echo $SUBNET | cut -d'/' -f1 | cut -d'.' -f1-3)
-          SUBNET="${NETWORK}.0/24"
-          GATEWAY="${NETWORK}.1"
-        fi
-        docker network create -d macvlan \
-          --subnet=$SUBNET \
-          --gateway=$GATEWAY \
-          -o parent=$DEFAULT_INTERFACE \
-          macvlan-net
-    
-    - name: Test macvlan network with container and get valid ip
-      run: |
-        docker run -d --name ${{ env.TEST_CONTAINER_NAME }} \
-          --network macvlan-net alpine:latest sleep 300
-        for i in {1..10}; do
-          if docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i >/dev/null 2>&1; then
-            echo "Container is ready"
-            break
-          fi
-          echo "Waiting for container to start... ($i)"
-          sleep 1
-        done
-        CONTAINER_IP=$(docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i)
-        docker stop ${{ env.TEST_CONTAINER_NAME }}
-        docker rm ${{ env.TEST_CONTAINER_NAME }}
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    
-    - name: Cleanup
-      if: always()
-      run: |
-        docker network rm macvlan-net || true
-        
+      - name: Install jinja-cli
+        run: |
+          pip3 install jinja-cli
+
+      - name: Create .env
+        run: |
+          jinja env.j2 --data ${{ env.MANIFEST }} > .env
+      
+      - name: Create Docker macvlan network
+        run: |
+          DEFAULT_INTERFACE=$(ip route show default | awk '/default/ { print $5 }' | head -1)
+          SUBNET=$(ip addr show $DEFAULT_INTERFACE | grep -E 'inet [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | awk '{print $2}' | head -1)
+          if [ -z "$SUBNET" ] || [ "$SUBNET" = "default" ]; then
+            SUBNET="10.1.0.0/16"
+            GATEWAY="10.1.0.1"
+          else
+            NETWORK=$(echo $SUBNET | cut -d'/' -f1 | cut -d'.' -f1-3)
+            SUBNET="${NETWORK}.0/24"
+            GATEWAY="${NETWORK}.1"
+          fi
+          docker network create -d macvlan \
+            --subnet=$SUBNET \
+            --gateway=$GATEWAY \
+            -o parent=$DEFAULT_INTERFACE \
+            macvlan-net
+      
+      - name: Test macvlan network with container and get valid ip
+        run: |
+          docker run -d --name ${{ env.TEST_CONTAINER_NAME }} \
+            --network macvlan-net alpine:latest sleep 300
+          for i in {1..10}; do
+            if docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i >/dev/null 2>&1; then
+              echo "Container is ready"
+              break
+            fi
+            echo "Waiting for container to start... ($i)"
+            sleep 1
+          done
+          CONTAINER_IP=$(docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i)
+          docker stop ${{ env.TEST_CONTAINER_NAME }}
+          docker rm ${{ env.TEST_CONTAINER_NAME }}
+
+      
+      - name: Cleanup
+        if: always()
+        run: |
+          docker network rm macvlan-net || true
+          

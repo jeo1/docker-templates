@@ -37,14 +37,18 @@ jobs:
           -o parent=$DEFAULT_INTERFACE \
           macvlan-net
     
-    - name: Test macvlan network with containers
+    - name: Test macvlan network with container and get valid ip
       run: |
         docker run -d --name test-container \
-          --network macvlan-net \
-          alpine:latest sleep 300
-        
-        # Wait for containers to start
-        sleep 5
+          --network macvlan-net alpine:latest sleep 300
+        for i in {1..10}; do
+          if docker exec test-container hostname -i >/dev/null 2>&1; then
+            echo "Container is ready"
+            break
+          fi
+          echo "Waiting for container to start... ($i)"
+          sleep 1
+        done
         CONTAINER_IP=$(docker exec test-container hostname -i)
         docker stop test-container
         docker rm test-container

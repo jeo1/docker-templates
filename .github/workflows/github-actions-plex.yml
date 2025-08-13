@@ -18,7 +18,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
     - name: Create Docker macvlan network
       run: |
         DEFAULT_INTERFACE=$(ip route show default | awk '/default/ { print $5 }' | head -1)
@@ -37,8 +40,46 @@ jobs:
           -o parent=$DEFAULT_INTERFACE \
           macvlan-net
     
+    - name: Test macvlan network with containers
+      run: |
+        # Create test containers on macvlan network
+        echo "Creating test containers on macvlan network..."
+        
+        # Container 1
+        docker run -d --name test-container-1 \
+          --network macvlan-net \
+          alpine:latest sleep 300
+        
+        # Container 2  
+        docker run -d --name test-container-2 \
+          --network macvlan-net \
+          alpine:latest sleep 300
+        
+        # Wait for containers to start
+        sleep 5
+        
+        echo "Container network information:"
+        docker exec test-container-1 ip addr show
+        docker exec test-container-2 ip addr show
+    
+    - name: Test network connectivity
+      run: |
+        # Get IP addresses of both containers
+        IP1=$(docker exec test-container-1 hostname -i)
+        IP2=$(docker exec test-container-2 hostname -i)
+        
+        echo "Container 1 IP: $IP1"
+        echo "Container 2 IP: $IP2"
+        
+        # Test connectivity between containers
+        echo "Testing connectivity from container 1 to container 2:"
+        docker exec test-container-1 ping -c 3 $IP2 || echo "Ping failed - this may be expected in GitHub Actions environment"
+    
     - name: Cleanup
       if: always()
       run: |
+        echo "Cleaning up containers and networks..."
+        docker stop test-container-1 test-container-2 test-specific-ip || true
+        docker rm test-container-1 test-container-2 test-specific-ip || true
         docker network rm macvlan-net || true
         

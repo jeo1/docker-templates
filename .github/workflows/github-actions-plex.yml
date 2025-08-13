@@ -80,7 +80,7 @@ jobs:
         run: |
           PLEX_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.PLEX_PORT')
           URL=http://${{ env.CONTAINER_IP }}:$PLEX_PORT
-          wait 5
+          sleep 5
           curl $URL
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then

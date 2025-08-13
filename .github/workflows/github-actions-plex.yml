@@ -14,12 +14,18 @@ env:
   PLEX_IP_ADDRESS_KEY: PLEX_IP_ADDRESS
 
 jobs:
-  setup-macvlan-network:
+  docker-compose-test:
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Get Docker network name
+        run: |
+          DOCKER_MACVLAN_NETWORK=$(cat ${{ env.MANIFEST }} | jq -r '.DOCKER_MACVLAN_NETWORK')
+          echo "DOCKER_NETWORK_NAME=$DOCKER_MACVLAN_NETWORK" >> $GITHUB_ENV
+
       
       - name: Create Docker macvlan network
         run: |
@@ -37,12 +43,12 @@ jobs:
             --subnet=$SUBNET \
             --gateway=$GATEWAY \
             -o parent=$DEFAULT_INTERFACE \
-            macvlan-net
+            ${{ env.DOCKER_NETWORK_NAME }}
       
       - name: Test macvlan network with container and get valid ip
         run: |
           docker run -d --name ${{ env.TEST_CONTAINER_NAME }} \
-            --network macvlan-net alpine:latest sleep 300
+            --network ${{ env.DOCKER_NETWORK_NAME }} alpine:latest sleep 300
           for i in {1..10}; do
             if docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i >/dev/null 2>&1; then
               echo "Container is ready"
@@ -89,5 +95,5 @@ jobs:
         if: always()
         run: |
           docker compose down --volumes
-          docker network rm macvlan-net || true
+          docker network rm ${{ env.DOCKER_NETWORK_NAME }} || true
           

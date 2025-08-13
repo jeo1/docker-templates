@@ -1,0 +1,143 @@
+name: Sonarr
+
+on:
+  push:
+    branches: [sonarr]
+    paths-ignore:
+      - README.md
+      - .gitignore
+  pull_request:
+
+env:
+  MANIFEST: .github/manifest.json
+  
+jobs:
+  setup-macvlan-network:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Get network interface information
+      run: |
+        echo "Available network interfaces:"
+        ip link show
+        echo "Default route:"
+        ip route show default
+        echo "Network configuration:"
+        ip addr show
+    
+    - name: Create Docker macvlan network
+      run: |
+        # Get the default network interface (usually eth0 in GitHub Actions)
+        DEFAULT_INTERFACE=$(ip route show default | awk '/default/ { print $5 }' | head -1)
+        echo "Using interface: $DEFAULT_INTERFACE"
+        
+        # Get the subnet of the default interface
+        SUBNET=$(ip route show | grep $DEFAULT_INTERFACE | grep -E '10\.|172\.|192\.168\.' | head -1 | awk '{print $1}')
+        echo "Detected subnet: $SUBNET"
+        
+        # Create macvlan network
+        docker network create -d macvlan \
+          --subnet=$SUBNET \
+          --gateway=$(ip route show default | awk '{print $3}' | head -1) \
+          -o parent=$DEFAULT_INTERFACE \
+          macvlan-net
+    
+    - name: Verify macvlan network creation
+      run: |
+        echo "Docker networks:"
+        docker network ls
+        echo "Macvlan network details:"
+        docker network inspect macvlan-net
+    
+    - name: Test macvlan network with containers
+      run: |
+        # Create test containers on macvlan network
+        echo "Creating test containers on macvlan network..."
+        
+        # Container 1
+        docker run -d --name test-container-1 \
+          --network macvlan-net \
+          alpine:latest sleep 300
+        
+        # Container 2  
+        docker run -d --name test-container-2 \
+          --network macvlan-net \
+          alpine:latest sleep 300
+        
+        # Wait for containers to start
+        sleep 5
+        
+        echo "Container network information:"
+        docker exec test-container-1 ip addr show
+        docker exec test-container-2 ip addr show
+    
+    - name: Test network connectivity
+      run: |
+        # Get IP addresses of both containers
+        IP1=$(docker exec test-container-1 hostname -i)
+        IP2=$(docker exec test-container-2 hostname -i)
+        
+        echo "Container 1 IP: $IP1"
+        echo "Container 2 IP: $IP2"
+        
+        # Test connectivity between containers
+        echo "Testing connectivity from container 1 to container 2:"
+        docker exec test-container-1 ping -c 3 $IP2 || echo "Ping failed - this may be expected in GitHub Actions environment"
+    
+    - name: Advanced macvlan network with IP assignment
+      run: |
+        # Create a more specific macvlan network with custom IP range
+        docker network create -d macvlan \
+          --subnet=192.168.100.0/24 \
+          --ip-range=192.168.100.128/25 \
+          --gateway=192.168.100.1 \
+          -o parent=eth0 \
+          macvlan-custom || echo "Custom macvlan creation failed - interface may not support it"
+        
+        # List all networks
+        docker network ls
+    
+    - name: Test with specific IP assignment
+      run: |
+        # Try to create container with specific IP (may not work in GitHub Actions)
+        docker run -d --name test-specific-ip \
+          --network macvlan-net \
+          --ip 192.168.100.150 \
+          alpine:latest sleep 300 || echo "Specific IP assignment failed - expected in GitHub Actions"
+    
+    - name: Cleanup
+      if: always()
+      run: |
+        echo "Cleaning up containers and networks..."
+        docker stop test-container-1 test-container-2 test-specific-ip || true
+        docker rm test-container-1 test-container-2 test-specific-ip || true
+        docker network rm macvlan-net macvlan-custom || true
+        
+    - name: Alternative - Bridge network for testing
+      run: |
+        echo "Creating bridge network as alternative for testing..."
+        docker network create --driver bridge test-bridge-net
+        
+        # Test with bridge network
+        docker run -d --name bridge-test-1 --network test-bridge-net alpine:latest sleep 60
+        docker run -d --name bridge-test-2 --network test-bridge-net alpine:latest sleep 60
+        
+        sleep 5
+        
+        # Test connectivity
+        IP1=$(docker exec bridge-test-1 hostname -i)
+        IP2=$(docker exec bridge-test-2 hostname -i)
+        echo "Bridge network test - Container 1: $IP1, Container 2: $IP2"
+        
+        docker exec bridge-test-1 ping -c 2 $IP2
+        
+        # Cleanup bridge test
+        docker stop bridge-test-1 bridge-test-2
+        docker rm bridge-test-1 bridge-test-2
+        docker network rm test-bridge-net

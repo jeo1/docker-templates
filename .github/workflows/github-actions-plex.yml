@@ -1,8 +1,8 @@
-name: Sonarr
+name: Plex
 
 on:
   push:
-    branches: [sonarr]
+    branches: [plex]
     paths-ignore:
       - README.md
       - .gitignore

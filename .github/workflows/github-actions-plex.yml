@@ -79,18 +79,17 @@ jobs:
       - name: Test HTTP response
         run: |
           PLEX_PORT=$(cat ${{ env.MANIFEST }} | jq -r '.PLEX_PORT')
-          URL=http://${{ env.CONTAINER_IP }}:$PLEX_PORT
+          URL=http://${{ env.CONTAINER_IP }}:$PLEX_PORT/web
+          cat .env
           for i in {1..30}; do
             if curl --silent --fail $URL > /dev/null; then
               echo "Service is up!"
               break
             fi
             echo "Waiting for Service... ($i)"
-            docker compose ps
             sleep 1
           done
           curl --fail $URL || (echo "Service did not respond" && exit 1)
-          
 
       - name: Cleanup
         if: always()

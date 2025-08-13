@@ -7,9 +7,10 @@ on:
       - README.md
       - .gitignore
   pull_request:
-
+  
 env:
   MANIFEST: .github/manifest.json
+  TEST_CONTAINER_NAME: test-container
 
 jobs:
   setup-macvlan-network:
@@ -39,19 +40,19 @@ jobs:
     
     - name: Test macvlan network with container and get valid ip
       run: |
-        docker run -d --name test-container \
+        docker run -d --name ${{ env.TEST_CONTAINER_NAME }} \
           --network macvlan-net alpine:latest sleep 300
         for i in {1..10}; do
-          if docker exec test-container hostname -i >/dev/null 2>&1; then
+          if docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i >/dev/null 2>&1; then
             echo "Container is ready"
             break
           fi
           echo "Waiting for container to start... ($i)"
           sleep 1
         done
-        CONTAINER_IP=$(docker exec test-container hostname -i)
-        docker stop test-container
-        docker rm test-container
+        CONTAINER_IP=$(docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i)
+        docker stop ${{ env.TEST_CONTAINER_NAME }}
+        docker rm ${{ env.TEST_CONTAINER_NAME }}
 
     
     - name: Cleanup

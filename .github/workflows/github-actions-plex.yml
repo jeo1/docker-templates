@@ -52,12 +52,14 @@ jobs:
             sleep 1
           done
           CONTAINER_IP=$(docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i)
-          echo $CONTAINER_IP
+          echo "X=$(docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i)" >> $GITHUB_ENV
+          echo ${{ env.X }}
           docker stop ${{ env.TEST_CONTAINER_NAME }}
           docker rm ${{ env.TEST_CONTAINER_NAME }}
 
       - name: Install jinja-cli
         run: |
+          echo ${{ env.X }}
           pip3 install jinja-cli
 
       - name: Create .env

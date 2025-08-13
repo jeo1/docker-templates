@@ -51,21 +51,18 @@ jobs:
             echo "Waiting for container to start... ($i)"
             sleep 1
           done
-          CONTAINER_IP=$(docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i)
-          echo "X=$(docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i)" >> $GITHUB_ENV
-          echo ${{ env.X }}
+          echo "CONTAINER_IP=$(docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i)" >> $GITHUB_ENV
           docker stop ${{ env.TEST_CONTAINER_NAME }}
           docker rm ${{ env.TEST_CONTAINER_NAME }}
 
       - name: Install jinja-cli
         run: |
-          echo ${{ env.X }}
           pip3 install jinja-cli
 
       - name: Create .env
         run: |
-          echo ${{ env.PLEX_IP_ADDRESS_KEY }} 
-          echo $CONTAINER_IP
+          jinja env.j2 --define PLEX_IP_ADDRESS ${{ env.CONTAINER_IP }} --data ${{ env.MANIFEST }} > .env
+          cat .env
       
       - name: Cleanup
         if: always()

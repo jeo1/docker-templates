@@ -61,11 +61,8 @@ jobs:
 
       - name: Create .env
         run: |
-          jinja env.j2 \
-            --data ${{ env.MANIFEST }} \
-            --define ${{ env.PLEX_IP_ADDRESS_KEY }} $CONTAINER_IP \
-            > .env
-          cat .env
+          echo ${{ env.PLEX_IP_ADDRESS_KEY }} 
+          echo $CONTAINER_IP
       
       - name: Cleanup
         if: always()

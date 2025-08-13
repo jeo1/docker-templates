@@ -52,6 +52,7 @@ jobs:
             sleep 1
           done
           CONTAINER_IP=$(docker exec ${{ env.TEST_CONTAINER_NAME }} hostname -i)
+          echo $CONTAINER_IP
           docker stop ${{ env.TEST_CONTAINER_NAME }}
           docker rm ${{ env.TEST_CONTAINER_NAME }}
 

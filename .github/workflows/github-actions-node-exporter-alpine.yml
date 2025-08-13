@@ -1,0 +1,32 @@
+name: Node-Exporter-Alpine
+
+on:
+  push:
+    branches: [node-exporter-alpine]
+    paths-ignore:
+      - README.md
+      - .gitignore
+  pull_request:
+
+env:
+  MANIFEST: .github/manifest.json
+  
+jobs:
+  docker-compose-test:
+    runs-on: ubuntu-latest
+    
+    container:
+      image: alpine:latest
+
+    services:
+      docker:
+        image: docker:dind
+
+    steps:
+      - name: Install dependencies
+        run: |
+          apk update
+          apk add docker-cli docker-compose bash curl python3 py3-pip
+
+      - name: Checkout code
+        uses: actions/checkout@v4

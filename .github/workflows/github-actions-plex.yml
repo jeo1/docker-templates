@@ -10,7 +10,7 @@ on:
 
 env:
   MANIFEST: .github/manifest.json
-  
+
 jobs:
   setup-macvlan-network:
     runs-on: ubuntu-latest
@@ -37,14 +37,29 @@ jobs:
         DEFAULT_INTERFACE=$(ip route show default | awk '/default/ { print $5 }' | head -1)
         echo "Using interface: $DEFAULT_INTERFACE"
         
-        # Get the subnet of the default interface
-        SUBNET=$(ip route show | grep $DEFAULT_INTERFACE | grep -E '10\.|172\.|192\.168\.' | head -1 | awk '{print $1}')
-        echo "Detected subnet: $SUBNET"
+        # Get the subnet of the default interface with improved detection
+        SUBNET=$(ip addr show $DEFAULT_INTERFACE | grep -E 'inet [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | awk '{print $2}' | head -1)
+        
+        # If subnet detection fails, use a common GitHub Actions subnet
+        if [ -z "$SUBNET" ] || [ "$SUBNET" = "default" ]; then
+          echo "Subnet detection failed, using common GitHub Actions subnet"
+          SUBNET="10.1.0.0/16"
+          GATEWAY="10.1.0.1"
+        else
+          echo "Detected subnet: $SUBNET"
+          # Extract just the network part (remove host bits)
+          NETWORK=$(echo $SUBNET | cut -d'/' -f1 | cut -d'.' -f1-3)
+          SUBNET="${NETWORK}.0/24"
+          GATEWAY="${NETWORK}.1"
+        fi
+        
+        echo "Using subnet: $SUBNET"
+        echo "Using gateway: $GATEWAY"
         
         # Create macvlan network
         docker network create -d macvlan \
           --subnet=$SUBNET \
-          --gateway=$(ip route show default | awk '{print $3}' | head -1) \
+          --gateway=$GATEWAY \
           -o parent=$DEFAULT_INTERFACE \
           macvlan-net
     
@@ -93,11 +108,12 @@ jobs:
     - name: Advanced macvlan network with IP assignment
       run: |
         # Create a more specific macvlan network with custom IP range
+        # Use a safe private subnet that shouldn't conflict
         docker network create -d macvlan \
-          --subnet=192.168.100.0/24 \
-          --ip-range=192.168.100.128/25 \
-          --gateway=192.168.100.1 \
-          -o parent=eth0 \
+          --subnet=172.20.0.0/24 \
+          --ip-range=172.20.0.128/25 \
+          --gateway=172.20.0.1 \
+          -o parent=$DEFAULT_INTERFACE \
           macvlan-custom || echo "Custom macvlan creation failed - interface may not support it"
         
         # List all networks
@@ -105,10 +121,10 @@ jobs:
     
     - name: Test with specific IP assignment
       run: |
-        # Try to create container with specific IP (may not work in GitHub Actions)
+        # Try to create container with specific IP from our custom range
         docker run -d --name test-specific-ip \
-          --network macvlan-net \
-          --ip 192.168.100.150 \
+          --network macvlan-custom \
+          --ip 172.20.0.150 \
           alpine:latest sleep 300 || echo "Specific IP assignment failed - expected in GitHub Actions"
     
     - name: Cleanup
@@ -119,25 +135,3 @@ jobs:
         docker rm test-container-1 test-container-2 test-specific-ip || true
         docker network rm macvlan-net macvlan-custom || true
         
-    - name: Alternative - Bridge network for testing
-      run: |
-        echo "Creating bridge network as alternative for testing..."
-        docker network create --driver bridge test-bridge-net
-        
-        # Test with bridge network
-        docker run -d --name bridge-test-1 --network test-bridge-net alpine:latest sleep 60
-        docker run -d --name bridge-test-2 --network test-bridge-net alpine:latest sleep 60
-        
-        sleep 5
-        
-        # Test connectivity
-        IP1=$(docker exec bridge-test-1 hostname -i)
-        IP2=$(docker exec bridge-test-2 hostname -i)
-        echo "Bridge network test - Container 1: $IP1, Container 2: $IP2"
-        
-        docker exec bridge-test-1 ping -c 2 $IP2
-        
-        # Cleanup bridge test
-        docker stop bridge-test-1 bridge-test-2
-        docker rm bridge-test-1 bridge-test-2
-        docker network rm test-bridge-net

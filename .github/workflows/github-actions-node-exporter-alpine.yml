@@ -51,6 +51,7 @@ jobs:
           sleep 5
           docker compose
           ip a
+          docker ps -a
 
       - name: Test HTTP response
         run: |

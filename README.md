@@ -4,6 +4,7 @@
 | [audiobooks](https://github.com/jeo1/docker-templates/tree/audiobooks) | ❌ |
 | [cadvisor](https://github.com/jeo1/docker-templates/tree/cadvisor) | ✅ |
 | [gitea](https://github.com/jeo1/docker-templates/tree/gitea) | ✅ |
+| [duckdns](https://github.com/jeo1/docker-templates/tree/duckdns) | ❌ |
 | [grafana](https://github.com/jeo1/docker-templates/tree/grafana) | ✅ |
 | [graphite](https://github.com/jeo1/docker-templates/tree/graphite) | ✅ |
 | [influxdb](https://github.com/jeo1/docker-templates/tree/influxdb) | ✅ |

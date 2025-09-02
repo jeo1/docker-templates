@@ -30,6 +30,8 @@ jobs:
       - name: Test HTTP response
         run: |
           echo "The secret is ${{ secrets.TEST }}"
+          [ "${{ secrets.TEST }}" = "abc123" ] && echo "Match" || echo "No match"
+
 
       - name: Tear down Docker Compose
         run: docker compose down --volumes

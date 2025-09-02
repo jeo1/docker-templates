@@ -39,6 +39,11 @@ jobs:
         run: |
           docker compose up -d
           sleep 20
+      
+      - name: Validate DuckDNS
+        run: |
+          IP=$(hostname -I | awk '{print $1}')
+          echo $IP
 
       - name: Tear down Docker Compose
         run: docker compose down --volumes

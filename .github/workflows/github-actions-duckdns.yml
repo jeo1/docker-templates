@@ -1,0 +1,39 @@
+name: Duckdns
+
+on:
+  push:
+    branches: [duckdns]
+    paths-ignore:
+      - README.md
+      - .gitignore
+  pull_request:
+
+env:
+  MANIFEST: .github/manifest.json
+
+jobs:
+  docker-compose-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install jinja-cli
+        run: |
+          pip3 install jinja-cli
+
+      - name: Create .env
+        run: |
+          jinja env.j2 --data ${{ env.MANIFEST }} > .env
+
+      - name: Docker Compose up
+        run: |
+          docker compose up -d
+          
+      - name: Test HTTP response
+        run: |
+          echo "The secret is ${{ secrets.TEST }}"
+
+      - name: Tear down Docker Compose
+        run: docker compose down --volumes

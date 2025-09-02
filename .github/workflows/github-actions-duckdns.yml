@@ -25,7 +25,7 @@ jobs:
 
       - name: Clear DuckDNS
         run: |
-          DUCKDNS_RESPONSE=$(curl -s "https://www.duckdns.org/update?domains=1${{ secrets.DUCKDNS_SUBDOMAIN }}&token=${{ secrets.DUCKDNS_TOKEN }}&clear=true")
+          DUCKDNS_RESPONSE=$(curl -s "https://www.duckdns.org/update?domains=${{ secrets.DUCKDNS_SUBDOMAIN }}&token=${{ secrets.DUCKDNS_TOKEN }}&clear=true")
           [ "$DUCKDNS_RESPONSE" = "OK" ] && echo "DuckDNS cleared" || exit 1
 
       - name: Create .env

@@ -26,7 +26,7 @@ jobs:
       - name: Clear DuckDNS
         run: |
           DUCKDNS_RESPONSE=$(curl -s "https://www.duckdns.org/update?domains=${{ secrets.DUCKDNS_SUBDOMAIN }}&token=${{ secrets.DUCKDNS_TOKEN }}&verbose=true&clear=true")
-          [ "$DUCKDNS_RESPONSE" = *"OK"* ] && echo "DuckDNS cleared" || exit 1
+          [[ "$DUCKDNS_RESPONSE" == *"OK"* ]] && echo "DuckDNS cleared" || exit 1
 
       - name: Create .env
         run: |
@@ -39,6 +39,7 @@ jobs:
         run: |
           docker compose up -d
           sleep 20
+
 
       - name: Tear down Docker Compose
         run: docker compose down --volumes

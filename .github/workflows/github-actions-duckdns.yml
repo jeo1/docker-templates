@@ -38,7 +38,6 @@ jobs:
       - name: Docker Compose up
         run: |
           docker compose up -d
-          sleep 20
 
       - name: Validate DuckDNS
         run: |

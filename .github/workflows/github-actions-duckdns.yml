@@ -1,4 +1,4 @@
-name: Duckdns
+name: DuckDNS
 
 on:
   push:
@@ -22,6 +22,10 @@ jobs:
       - name: Install jinja-cli
         run: |
           pip3 install jinja-cli
+
+      - name: Clear DuckDNS
+        run: |
+          r=$(curl -s "https://www.duckdns.org/update?domains=${{ secrets.DUCKDNS_SUBDOMAIN }}&token=${{ secrets.DUCKDNS_TOKEN }}&clear=true")
 
       - name: Create .env
         run: |

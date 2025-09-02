@@ -23,15 +23,17 @@ jobs:
         run: |
           pip3 install jinja-cli
 
+      - name: Create .env
+        run: |
+          jinja env.j2 \
+            -D duckdns_subdomains ${{ secrets.DUCKDNS_SUBDOMAIN }} \
+            -D duckdns_token ${{ secrets.DUCKDNS_TOKEN }} \
+            > .env
+
       - name: Docker Compose up
         run: |
           docker compose up -d
-          
-      - name: Test HTTP response
-        run: |
-          echo "The secret is ${{ secrets.TEST }}"
-          [ "${{ secrets.TEST }}" = "abc123" ] && echo "Match" || echo "No match"
-
+          sleep 20
 
       - name: Tear down Docker Compose
         run: docker compose down --volumes

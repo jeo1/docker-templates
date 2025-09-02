@@ -27,7 +27,6 @@ jobs:
         run: |
           DUCKDNS_RESPONSE=$(curl -s "https://www.duckdns.org/update?domains=${{ secrets.DUCKDNS_SUBDOMAIN }}&token=${{ secrets.DUCKDNS_TOKEN }}&verbose=true&clear=true")
           [[ "$DUCKDNS_RESPONSE" == *"OK"* ]] && echo "DuckDNS cleared" || exit 1
-          echo "RESPONSE='$DUCKDNS_RESPONSE'" >> $GITHUB_ENV
 
       - name: Create .env
         run: |
@@ -43,7 +42,9 @@ jobs:
       
       - name: Validate DuckDNS
         run: |
-          echo ${{ env.RESPONSE }}
+          DUCKDNS_RESPONSE=$(curl -s "https://www.duckdns.org/update?domains=${{ secrets.DUCKDNS_SUBDOMAIN }}&token=${{ secrets.DUCKDNS_TOKEN }}&verbose=true&clear=true")
+          [[ "$DUCKDNS_RESPONSE" == *"OK"* && "$DUCKDNS_RESPONSE" != *"NOCHANGE"* ]] && echo "DuckDNS cleared" || exit 1
+
 
 
       - name: Tear down Docker Compose

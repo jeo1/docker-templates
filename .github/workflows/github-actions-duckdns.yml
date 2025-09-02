@@ -23,10 +23,6 @@ jobs:
         run: |
           pip3 install jinja-cli
 
-      - name: Create .env
-        run: |
-          jinja env.j2 --data ${{ env.MANIFEST }} > .env
-
       - name: Docker Compose up
         run: |
           docker compose up -d

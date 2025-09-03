@@ -36,14 +36,14 @@
 | radarr | ✅ |  |
 | sonarr | ✅ |  |
 | tdarr | ✅ |  |
-| qbittorrent | ❌ |  |
-| tautulli | ❌ |  |
+| qbittorrent | ❌ | needs review |
+| tautulli | ❌ | needs review |
 | jellyfin | ❕ | using latest sha (untested) |
-| cadvisor |  | waitng for merge |
-| kuma |  | waitng for merge |
+| cadvisor | ❌ | waitng for merge / latest did not match (may be out of date) |
+| kuma | ✅ | waitng for merge |
 | jacket |  | using latest sha (no merge yet) |
 | plex |  | using latest sha (no merge yet) |
 | duckdns | ⚠️ | no merge created |
 | graphite |  | out of scope |
 | influxdb |  | out of scope |
-| twitch-dvr |  | not tested |
+| twitch-dvr |  | no need to test |

@@ -29,6 +29,7 @@
 | --------- | :----: | ----- |
 | gitea | ✅ |  |
 | grafana | ✅ |  |
+| kuma | ✅ |  |
 | nginx | ✅ |  |
 | node-exporter | ✅ |  |
 | prometheus | ✅ |  |
@@ -36,14 +37,13 @@
 | radarr | ✅ |  |
 | sonarr | ✅ |  |
 | tdarr | ✅ |  |
+| jellyfin | ❕ | using latest sha (untested) |
+| duckdns | ⚠️ | no merge created |
 | qbittorrent | ❌ | needs review |
 | tautulli | ❌ | needs review |
-| jellyfin | ❕ | using latest sha (untested) |
-| cadvisor | ❌ | waitng for merge / latest did not match (may be out of date) |
-| kuma | ✅ | waitng for merge |
+| cadvisor | ❌ | latest did not match (may be out of date) |s
 | jacket |  | using latest sha (no merge yet) |
 | plex |  | using latest sha (no merge yet) |
-| duckdns | ⚠️ | no merge created |
 | graphite |  | out of scope |
 | influxdb |  | out of scope |
 | twitch-dvr |  | no need to test |

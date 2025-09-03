@@ -1,5 +1,5 @@
-# Containers included
-| Container | Github-Actions |
+# Compose included
+| Compose | Github-Actions |
 | --------- | :------------: |
 | [audiobooks](https://github.com/jeo1/docker-templates/tree/audiobooks) | ❌ |
 | [cadvisor](https://github.com/jeo1/docker-templates/tree/cadvisor) | ✅ |
@@ -23,3 +23,27 @@
 | [tautulli](https://github.com/jeo1/docker-templates/tree/tautulli) | ✅ |
 | [tdarr](https://github.com/jeo1/docker-templates/tree/tdarr) | ✅ |
 | [twitch-dvr](https://github.com/jeo1/docker-templates/tree/twitch-dvr) | ❌ |
+
+# Renovate Prep
+| Container | Status | Notes |
+| --------- | :----: | ----- |
+| gitea | ✅ |  |
+| grafana | ✅ |  |
+| nginx | ✅ |  |
+| node-exporter | ✅ |  |
+| prometheus | ✅ |  |
+| portainer | ✅ |  |
+| radarr | ✅ |  |
+| sonarr | ✅ |  |
+| tdarr | ✅ |  |
+| qbittorrent | ❌ |  |
+| tautulli | ❌ |  |
+| jellyfin | ❕ | using latest sha (untested) |
+| cadvisor |  | waitng for merge |
+| kuma |  | waitng for merge |
+| jacket |  | using latest sha (no merge yet) |
+| plex |  | using latest sha (no merge yet) |
+| duckdns | ⚠️ | no merge created |
+| graphite |  | out of scope |
+| influxdb |  | out of scope |
+| twitch-dvr |  | not tested |

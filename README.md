@@ -39,7 +39,7 @@
 | kuma | ✅ |  |
 | nginx | ✅ |  |
 | node-exporter | ✅ |  |
-| plex |  | using latest sha (no merge yet) |
+| plex | ❕ | using latest sha (no merge yet) |
 | portainer | ✅ |  |
 | prometheus | ✅ |  |
 | qbittorrent | ⚠️ | error with named verison - now testing with latest |

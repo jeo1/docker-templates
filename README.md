@@ -29,6 +29,7 @@
 | --------- | :----: | ----- |
 | gitea | ✅ |  |
 | grafana | ✅ |  |
+| jacket | ✅ | using latest sha |
 | kuma | ✅ |  |
 | nginx | ✅ |  |
 | node-exporter | ✅ |  |
@@ -42,7 +43,6 @@
 | qbittorrent | ❌ | needs review |
 | tautulli | ❌ | needs review |
 | cadvisor | ❌ | latest did not match (may be out of date) |s
-| jacket |  | using latest sha (no merge yet) |
 | plex |  | using latest sha (no merge yet) |
 | graphite |  | out of scope |
 | influxdb |  | out of scope |

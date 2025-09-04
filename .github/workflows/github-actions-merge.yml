@@ -1,4 +1,4 @@
-name: Merge Action (Nginx)
+name: Merge Action (Node-Exporter)
 
 on:
   pull_request:

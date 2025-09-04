@@ -39,11 +39,13 @@
 | sonarr | ✅ |  |
 | tdarr | ✅ |  |
 | jellyfin | ❕ | using latest sha (untested) |
-| duckdns | ⚠️ | no merge created |
-| qbittorrent | ❌ | needs review |
-| tautulli | ❌ | needs review |
-| cadvisor | ❌ | latest did not match (may be out of date) |s
+| duckdns | ⚠️ | no merge created - now testing with latest |
+| qbittorrent | ⚠️ | error with named verison - now testing with latest |
+| tautulli | ⚠️ | no pull with named verison - now testing with latest |
+| cadvisor | ❌ | latest did not match (may be out of date) |
 | plex |  | using latest sha (no merge yet) |
 | graphite |  | out of scope |
 | influxdb |  | out of scope |
 | twitch-dvr |  | no need to test |
+| audiobooks |  | no github action |
+| twitch-dvr |  | look into checking if changes to dependencies |

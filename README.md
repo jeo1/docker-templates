@@ -11,10 +11,10 @@
 | [jackett](https://github.com/jeo1/docker-templates/tree/jackett) | ✅ | ✅ |
 | [jellyfin](https://github.com/jeo1/docker-templates/tree/jellyfin) | ✅ |  |
 | [kuma](https://github.com/jeo1/docker-templates/tree/kuma) | ✅ | ✅ |
-| [plex](https://github.com/jeo1/docker-templates/tree/plex) | ⚠️ |  |
 | [nginx](https://github.com/jeo1/docker-templates/tree/nginx) | ✅ | ✅ |
-| [node-exporter](https://github.com/jeo1/docker-templates/tree/node-exporter) | ✅ | ✅ |
 | [node-exporter-alpine](https://github.com/jeo1/docker-templates/tree/node-exporter-alpine) | ⚠️ |  |
+| [node-exporter](https://github.com/jeo1/docker-templates/tree/node-exporter) | ✅ | ✅ |
+| [plex](https://github.com/jeo1/docker-templates/tree/plex) | ⚠️ |  |
 | [portainer](https://github.com/jeo1/docker-templates/tree/portainer) | ✅ | ✅ |
 | [prometheus](https://github.com/jeo1/docker-templates/tree/prometheus) | ✅ | ✅ |
 | [qbittorrent](https://github.com/jeo1/docker-templates/tree/qbittorrent) | ✅ |  |
@@ -27,24 +27,24 @@
 # Renovate Prep
 | Container | Status | Notes |
 | --------- | :----: | ----- |
+| audiobooks |  | no github action |
+| cadvisor | ❌ | latest did not match (may be out of date) |
+| duckdns | ⚠️ | no merge created - now testing with latest |
 | gitea | ✅ |  |
 | grafana | ✅ |  |
+| graphite |  | out of scope |
+| influxdb |  | out of scope |
 | jacket | ✅ | using latest sha |
+| jellyfin | ❕ | using latest sha (untested) |
 | kuma | ✅ |  |
 | nginx | ✅ |  |
 | node-exporter | ✅ |  |
-| prometheus | ✅ |  |
+| plex |  | using latest sha (no merge yet) |
 | portainer | ✅ |  |
+| prometheus | ✅ |  |
+| qbittorrent | ⚠️ | error with named verison - now testing with latest |
 | radarr | ✅ |  |
 | sonarr | ✅ |  |
-| tdarr | ✅ |  |
-| jellyfin | ❕ | using latest sha (untested) |
-| duckdns | ⚠️ | no merge created - now testing with latest |
-| qbittorrent | ⚠️ | error with named verison - now testing with latest |
 | tautulli | ⚠️ | no pull with named verison - now testing with latest |
-| cadvisor | ❌ | latest did not match (may be out of date) |
-| plex |  | using latest sha (no merge yet) |
-| graphite |  | out of scope |
-| influxdb |  | out of scope |
-| audiobooks |  | no github action |
+| tdarr | ✅ |  |
 | twitch-dvr |  | look into checking if changes to dependencies |

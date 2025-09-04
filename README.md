@@ -3,8 +3,8 @@
 | --------- | :------------: |
 | [audiobooks](https://github.com/jeo1/docker-templates/tree/audiobooks) | ❌ |
 | [cadvisor](https://github.com/jeo1/docker-templates/tree/cadvisor) | ✅ |
-| [gitea](https://github.com/jeo1/docker-templates/tree/gitea) | ✅ |
 | [duckdns](https://github.com/jeo1/docker-templates/tree/duckdns) | ✅ |
+| [gitea](https://github.com/jeo1/docker-templates/tree/gitea) | ✅ |
 | [grafana](https://github.com/jeo1/docker-templates/tree/grafana) | ✅ |
 | [graphite](https://github.com/jeo1/docker-templates/tree/graphite) | ✅ |
 | [influxdb](https://github.com/jeo1/docker-templates/tree/influxdb) | ✅ |
@@ -46,6 +46,5 @@
 | plex |  | using latest sha (no merge yet) |
 | graphite |  | out of scope |
 | influxdb |  | out of scope |
-| twitch-dvr |  | no need to test |
 | audiobooks |  | no github action |
 | twitch-dvr |  | look into checking if changes to dependencies |

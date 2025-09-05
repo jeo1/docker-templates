@@ -48,3 +48,9 @@
 | tautulli | ⚠️ | no pull with named verison - now testing with latest |
 | tdarr | ✅ |  |
 | twitch-dvr |  | look into checking if changes to dependencies |
+
+# moved to v2
+- audiobooks
+- sonarr
+- jackett
+- nginx
